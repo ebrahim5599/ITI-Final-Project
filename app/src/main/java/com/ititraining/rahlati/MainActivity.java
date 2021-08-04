@@ -68,4 +68,3 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 }
-// the best software developer all over the world #Ahmed Ward
