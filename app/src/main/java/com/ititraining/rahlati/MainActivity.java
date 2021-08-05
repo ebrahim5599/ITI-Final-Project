@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
                 Intent intent = new Intent(MainActivity.this,SetTripActivity.class);
                 startActivity(intent);
-
+// 00
             }
         });
 
