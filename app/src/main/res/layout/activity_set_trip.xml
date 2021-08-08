@@ -53,4 +53,5 @@
         android:layout_gravity="center"
         android:text="add trip" />
 
+
 </LinearLayout>

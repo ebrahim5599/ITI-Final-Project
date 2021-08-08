@@ -26,9 +26,24 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import static com.ititraining.rahlati.SetTripActivity.FILE_NAME;
+
 public class MainActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
+    private FileInputStream fis;
+    private InputStreamReader isr;
+    private BufferedReader br;
+    private HomeFragment fragment;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+    private String allText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,26 +76,41 @@ public class MainActivity extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-//
-//        Intent intent = getIntent();
-//        String trip_name = intent.getStringExtra("TRIP_NAME");
-//        String trip_start_point = intent.getStringExtra("START");
-//        String trip_end_point = intent. getStringExtra("END");
-//        Toast.makeText(this,trip_name, Toast.LENGTH_SHORT).show();
-//
-//        if(savedInstanceState == null){
-//            fragment = new HomeFragment();
-//            fragmentManager = getSupportFragmentManager();
-//            fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.nav_host_fragment, fragment, "HomeFragment").commit();
-//        }else{
-//            fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("HomeFragment");
-//        }
-//
-//        fragment.setTripName(trip_name);
-//        fragment.setStartPoint(trip_start_point);
-//        fragment.setEndPoint(trip_end_point);
+/*
+ *  TODO: this code to receive data from Stream and pass it to HomeFragment.
+ *  Internal Storage.
 
+        try {
+            fis = openFileInput(FILE_NAME);
+            isr = new InputStreamReader(fis);
+            br = new BufferedReader(isr);
+
+            String temp = "";
+            while ((temp = br.readLine()) != null){
+                allText += temp;
+            }
+
+            br.close();
+            isr.close();
+            fis.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(savedInstanceState == null){
+            fragment = new HomeFragment();
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.nav_host_fragment, fragment, "Fragment");
+            fragmentTransaction.commit();
+        }else{
+            fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("Fragment");
+        }
+
+        fragment.setAllText(allText);
+
+ */
     }
 
 
@@ -91,16 +121,4 @@ public class MainActivity extends AppCompatActivity{
                 || super.onSupportNavigateUp();
     }
 
-//
-//    private void setTripName(String tripName) {
-//        this.tripName = tripName;
-//    }
-//
-//    private void setStartPoint(String startPoint) {
-//        this.startPoint = startPoint;
-//    }
-//
-//    private void setEndPoint(String endPoint) {
-//        this.endPoint = endPoint;
-//    }
 }

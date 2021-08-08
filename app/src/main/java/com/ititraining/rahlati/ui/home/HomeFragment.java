@@ -1,7 +1,9 @@
+
 package com.ititraining.rahlati.ui.home;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,38 +21,66 @@ import com.ititraining.rahlati.MainActivity;
 import com.ititraining.rahlati.R;
 import com.ititraining.rahlati.SetTripActivity;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.ititraining.rahlati.SetTripActivity.FILE_NAME;
 
 public class HomeFragment extends Fragment {
 
-    private String tripName, startPoint, endPoint;
+    private String tripName, startPoint, endPoint, allText;
     public static ArrayList<UpComingTrips> arrayList;
     public static UpComingTrips upComingTrips;
     public static ComingTripsAdapter adapter;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(allText != null)
+            Toast.makeText(getContext(), allText, Toast.LENGTH_SHORT).show();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-//        TextView textViewHistory = view.findViewById(R.id.text_home);
-//        textViewHistory.setText("This is Home Fragment");
-
         ListView listView = view.findViewById(R.id.home_listView_fragment);
         arrayList = new ArrayList<>();
+        arrayList.add(new UpComingTrips("Trip 1", "Cairo", "Alex"));
+        arrayList.add(new UpComingTrips("Trip 2", "Tanta", "Zagazig"));
+
+
         adapter = new ComingTripsAdapter(getContext(), arrayList);
         listView.setAdapter(adapter);
-
-//        if(listView != null){
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(getActivity(), SetTripActivity.class);
+                startPoint = adapter.getItem(position).getStartPoint();
+                endPoint = adapter.getItem(position).getEndPoint();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr="+startPoint+"&daddr="+endPoint));
                 startActivity(intent);
             }
         });
-//        }
 
         return view;
     }
+
+    public void setAllText(String allText){ this.allText = allText; }
 }
+/*
+//            if (allText.contains(".")) {
+//                // Split it.
+//                String[] parts = allText.split("[.]");
+//                String part1 = parts[0];
+//                String part2 = parts[1];
+//                edt_number.setText(part1);
+//                edt_message.setText(part2);
+//            }
+ */
+
+/*
+Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+    Uri.parse("google.navigation:q=an+address+city"))
+ */
