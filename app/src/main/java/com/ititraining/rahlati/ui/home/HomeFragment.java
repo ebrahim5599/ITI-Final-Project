@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
 
         adapter = new ComingTripsAdapter(getContext(), arrayList);
         listView.setAdapter(adapter);
+        listView.setDivider(null);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
