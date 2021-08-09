@@ -67,6 +67,14 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
         TextView note = convertView.findViewById(R.id.note);
         note.setText("NOTE");
 
+        TextView menu = convertView.findViewById(R.id.menu_icon);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Menu", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return convertView;
     }
 }
