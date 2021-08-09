@@ -25,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.ititraining.rahlati.SetTripActivity.FILE_NAME;
 
 public class HomeFragment extends Fragment {
 
