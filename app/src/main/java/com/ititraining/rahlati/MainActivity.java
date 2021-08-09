@@ -32,7 +32,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static com.ititraining.rahlati.SetTripActivity.FILE_NAME;
 
 public class MainActivity extends AppCompatActivity{
 
