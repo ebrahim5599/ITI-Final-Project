@@ -47,8 +47,8 @@ public class HomeFragment extends Fragment {
 
         ListView listView = view.findViewById(R.id.home_listView_fragment);
         arrayList = new ArrayList<>();
-        arrayList.add(new UpComingTrips("Trip 1", "Cairo", "Alex"));
-        arrayList.add(new UpComingTrips("Trip 2", "Tanta", "Zagazig"));
+        arrayList.add(new UpComingTrips("08:00 AM","20-8-2021", "Trip 1", "Cairo", "Alex"));
+        arrayList.add(new UpComingTrips("05:00 PM","22-8-2021","Trip 2", "Tanta", "Zagazig"));
 
 
         adapter = new ComingTripsAdapter(getContext(), arrayList);

@@ -1,6 +1,8 @@
 package com.ititraining.rahlati.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,21 +32,35 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
         }
 
         UpComingTrips upComingTrips = (UpComingTrips) getItem(position);
-        TextView tripName = convertView.findViewById(R.id.trip_name);
+
+        TextView date = convertView.findViewById(R.id.date_view);
+        date.setText(upComingTrips.getDate());
+
+        TextView time = convertView.findViewById(R.id.time_view);
+        time.setText(upComingTrips.getTime());
+
+        TextView tripName = convertView.findViewById(R.id.tripName);
         tripName.setText(upComingTrips.getTripName());
 
         TextView startPoint = convertView.findViewById(R.id.start_point);
-        startPoint.setText(upComingTrips.getStartPoint());
+        startPoint.setText(" "+upComingTrips.getStartPoint());
 
         TextView endPoint = convertView.findViewById(R.id.end_point);
-        endPoint.setText(upComingTrips.getEndPoint());
+        endPoint.setText(" "+upComingTrips.getEndPoint());
+
+        TextView upComing = convertView.findViewById(R.id.up_coming);
+        upComing.setText("Up Coming");
 
         TextView start = convertView.findViewById(R.id.start);
         start.setText("START TRIP");
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), upComingTrips.getTripName(), Toast.LENGTH_SHORT).show();
+                String startPoint = upComingTrips.getStartPoint();
+                String endPoint = upComingTrips.getEndPoint();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr="+startPoint+"&daddr="+endPoint));
+                getContext().startActivity(intent);
             }
         });
 

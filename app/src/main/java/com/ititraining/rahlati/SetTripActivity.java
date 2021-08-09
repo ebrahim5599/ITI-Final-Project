@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
@@ -15,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
 import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
@@ -35,6 +39,24 @@ public class SetTripActivity extends AppCompatActivity {
         EditText edt_trip_name = (EditText) findViewById(R.id.trip_name);
         EditText edt_start = (EditText) findViewById(R.id.start);
         EditText edt_end = (EditText) findViewById(R.id.end);
+
+        // Spinner 1 [Repetition].
+        Spinner repetition_spinner = (Spinner) findViewById(R.id.repetition_spinner);
+        String repetition_array[] = {"No Repeat", "Repeat Daily", "Repeat Weekly", "Repeat Monthly"};
+        ArrayAdapter<String> repetition_adapter = new ArrayAdapter<String>(SetTripActivity.this, android.R.layout.simple_list_item_1, repetition_array);
+        repetition_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        repetition_spinner.setAdapter(repetition_adapter);
+
+        // Spinner 2 [Ways].
+        Spinner way_spinner = (Spinner) findViewById(R.id.way_spinner);
+        String way_array[] = {"One Way", "Two Ways"};
+        ArrayAdapter<String> way_adapter = new ArrayAdapter<String>(SetTripActivity.this, android.R.layout.simple_list_item_1, way_array);
+        way_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        way_spinner.setAdapter(way_adapter);
+
+        // Date and Time TextViews.
+        TextView txt_date = (TextView) findViewById(R.id.date);
+        TextView txt_time = (TextView) findViewById(R.id.time);
 
         Button addTrip = (Button) findViewById(R.id.add);
         addTrip.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +81,8 @@ public class SetTripActivity extends AppCompatActivity {
                 }
 
  */
-                upComingTrips = new UpComingTrips(edt_trip_name.getText().toString(),  edt_start.getText().toString(), edt_end.getText().toString());
+                upComingTrips = new UpComingTrips(txt_date.getText().toString(),txt_time.getText().toString(),
+                        edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
                 arrayList.add(upComingTrips);
                 adapter.notifyDataSetChanged();
                 finish();
