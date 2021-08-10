@@ -1,12 +1,16 @@
 package com.ititraining.rahlati.ui.home;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,8 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ititraining.rahlati.R;
+import com.ititraining.rahlati.SetTripActivity;
 
 import java.util.ArrayList;
+
+import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
+import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
 
 public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
     public ComingTripsAdapter(@NonNull Context context, @NonNull ArrayList<UpComingTrips> upComingTrips) {
@@ -56,10 +64,9 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String startPoint = upComingTrips.getStartPoint();
                 String endPoint = upComingTrips.getEndPoint();
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr="+startPoint+"&daddr="+endPoint));
+                        Uri.parse("google.navigation:q="+endPoint));
                 getContext().startActivity(intent);
             }
         });
@@ -71,7 +78,58 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Menu", Toast.LENGTH_SHORT).show();
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(getContext(), menu);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if(item.getTitle().toString().contains("Note")){
+                            Toast.makeText(getContext(), "Not working yet", Toast.LENGTH_SHORT).show();
+                        }
+                        if(item.getTitle().toString().contains("Edit")){
+                            Toast.makeText(getContext(), "ُEdited", Toast.LENGTH_SHORT).show();
+                            Intent edit_intent = new Intent(getContext(),SetTripActivity.class);
+                            edit_intent.putExtra("POSITION",position);
+                            edit_intent.putExtra("DATE",upComingTrips.getDate());
+                            edit_intent.putExtra("TIME",upComingTrips.getTime());
+                            edit_intent.putExtra("TRIP_NAME",upComingTrips.getTripName());
+                            edit_intent.putExtra("START_POINT",upComingTrips.getStartPoint());
+                            edit_intent.putExtra("END_POINT",upComingTrips.getEndPoint());
+                            getContext().startActivity(edit_intent);
+                        }
+                        if(item.getTitle().toString().contains("Cancel")){
+
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("Cancel Trip!")
+                                    .setMessage("Are you sure you want to cancel this trip?")
+                                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                                    // The dialog is automatically dismissed when a dialog button is clicked.
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Continue with delete operation
+                                            Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+                                            arrayList.remove(position);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    })
+
+                                    // A null listener allows the button to dismiss the dialog and take no further action.
+                                    .setNegativeButton("No", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                        if(item.getTitle().toString().contains("Delete")){
+                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                            arrayList.remove(position);
+                            adapter.notifyDataSetChanged();
+                        }
+                        return true;
+                    }
+                });
+                popup.show(); //showing popup menu
             }
         });
 

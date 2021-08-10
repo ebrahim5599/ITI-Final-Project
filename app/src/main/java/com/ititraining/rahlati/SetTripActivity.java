@@ -57,36 +57,39 @@ public class SetTripActivity extends AppCompatActivity {
         // Date and Time TextViews.
         TextView txt_date = (TextView) findViewById(R.id.date);
         TextView txt_time = (TextView) findViewById(R.id.time);
-
+// Button addTrip = ... raw 61
+        Intent edit_intent = getIntent();
+        edt_trip_name.setText(edit_intent.getStringExtra("TRIP_NAME"));
+        edt_start.setText(edit_intent.getStringExtra("START_POINT"));
+        edt_end.setText(edit_intent.getStringExtra("END_POINT"));
+        txt_date.setText(edit_intent.getStringExtra("DATE"));
+        txt_time.setText(edit_intent.getStringExtra("TIME"));
+// فاضل تعديل التاريخ والوقت
         Button addTrip = (Button) findViewById(R.id.add);
-        addTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-/*  TODO: this code to send data through Stream to MainActivity. [Internal Storage]
-
-                try {
-                    File f = new File(getFilesDir(), FILE_NAME);
-                    if(!f.exists()){
-                        f.createNewFile();
-                    }
-                    fos = new FileOutputStream(f, true);
-                    PrintWriter pw = new PrintWriter(fos);
-                    pw.println(edt_trip_name.getText()+"."+edt_start.getText()+"."+edt_end.getText());
-                    fos.write(edt_trip_name.getText().toString().getBytes());
-                    pw.close();
-                    fos.close();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if(edit_intent.getStringExtra("TRIP_NAME") != null){
+            addTrip.setText("EDIT TRIP INFO");
+            addTrip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    upComingTrips = new UpComingTrips(txt_date.getText().toString(),txt_time.getText().toString(),
+                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
+                    arrayList.set(edit_intent.getIntExtra("POSITION",0),upComingTrips);
+                    adapter.notifyDataSetChanged();
+                    finish();
                 }
-
- */
-                upComingTrips = new UpComingTrips(txt_date.getText().toString(),txt_time.getText().toString(),
-                        edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
-                arrayList.add(upComingTrips);
-                adapter.notifyDataSetChanged();
-                finish();
-            }
-        });
+            });
+        }else{
+            addTrip.setText("ADD TRIP");
+            addTrip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    upComingTrips = new UpComingTrips(txt_date.getText().toString(),txt_time.getText().toString(),
+                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
+                    arrayList.add(upComingTrips);
+                    adapter.notifyDataSetChanged();
+                    finish();
+                }
+            });
+        }
     }
 }
