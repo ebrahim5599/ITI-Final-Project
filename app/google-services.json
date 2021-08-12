@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "201609081235",
+    "project_id": "rahlati-3cb5f",
+    "storage_bucket": "rahlati-3cb5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201609081235:android:03c4e7ade13cbe1fac3866",
+        "android_client_info": {
+          "package_name": "com.ititraining.rahlati"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201609081235-agsfsdhvqgiblf6rk6o5g7puncuv5usi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ititraining.rahlati",
+            "certificate_hash": "3c518f1dae05a1a6375716575a955f8e8ffc2f0e"
+          }
+        },
+        {
+          "client_id": "201609081235-ndfc2m7u7h55c7r9ijolqd5lf023347s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsQFvSvl2TA7glCCVjGv10p0ymLIQdrv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201609081235-ndfc2m7u7h55c7r9ijolqd5lf023347s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,24 +1,46 @@
 package com.ititraining.rahlati.ui.history;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.ititraining.rahlati.R;
+import com.ititraining.rahlati.ui.home.ComingTripsAdapter;
+import com.ititraining.rahlati.ui.home.UpComingTrips;
+
+import java.util.ArrayList;
 
 public class HistoryFragment extends Fragment {
+
+    public static ArrayList<UpComingTrips> historyArrayList;
+    public static HistoryTripsAdapter historyAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        TextView textViewHistory = view.findViewById(R.id.text_History);
-        textViewHistory.setText("This is History Fragment");
+        ListView listView = view.findViewById(R.id.history_listView_fragment);
+        historyArrayList = new ArrayList<>();
+        historyArrayList.add(new UpComingTrips("08:00 AM","20-8-2021", "Trip 1", "Cairo", "Alex"));
+        historyArrayList.add(new UpComingTrips("05:00 PM","22-8-2021","Trip 2", "Tanta", "Zagazig"));
+        historyArrayList.add(new UpComingTrips("08:00 AM","20-8-2021", "Trip 1", "Cairo", "Alex"));
+        historyArrayList.add(new UpComingTrips("05:00 PM","22-8-2021","Trip 2", "Tanta", "Zagazig"));
+
+        historyAdapter = new HistoryTripsAdapter(getContext(), historyArrayList);
+        listView.setAdapter(historyAdapter);
+        listView.setDivider(null);
+
 
         return view;
     }
