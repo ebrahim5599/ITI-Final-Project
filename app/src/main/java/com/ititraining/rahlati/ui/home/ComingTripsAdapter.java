@@ -103,7 +103,6 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                         if(item.getTitle().toString().contains("Cancel")){
 
                             new AlertDialog.Builder(getContext())
-                                    .setTitle("Cancel Trip!")
                                     .setMessage("Are you sure you want to cancel this trip?")
                                     // Specifying a listener allows you to take an action before dismissing the dialog.
                                     // The dialog is automatically dismissed when a dialog button is clicked.
