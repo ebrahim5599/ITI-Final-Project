@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -29,6 +31,7 @@ import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
 import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
@@ -41,8 +44,9 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     private FileOutputStream fos;
     private FileInputStream fis;
     EditText edt_end,edt_start;
-    ImageButton calender;
+    ImageButton calender,alarm;
     TextView txt_date,txt_time;
+    int hour,minute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +56,21 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         edt_start = (EditText) findViewById(R.id.start);
         edt_end = (EditText) findViewById(R.id.end);
         calender = findViewById(R.id.calbtm);
+        alarm = findViewById(R.id.alarmbtn);
         //////////////////////////////////
         //Calender.
         calender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePikerDialog();
+            }
+        });
+        //////////////////////////////////
+        ///Alarm.
+        alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popTimePiker();
             }
         });
         //////////////////////////////////
@@ -143,6 +156,24 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             });
         }
     }
+
+    private void popTimePiker() {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
+                hour=selectedHour;
+                minute=selectedMinute;
+                String Time=""+hour+":"+minute;
+                txt_time.setText(Time);
+
+            }
+        };
+        TimePickerDialog timePickerDialog= new TimePickerDialog(this,onTimeSetListener,hour,minute,true);
+        timePickerDialog.setTitle("Select Time");
+        timePickerDialog.show();
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -171,4 +202,5 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         String date =""+ dayOfMonth + '/' + (month+1) + '/' + year;
         txt_date.setText(date);
     }
+
 }
