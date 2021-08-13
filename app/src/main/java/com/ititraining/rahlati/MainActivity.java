@@ -10,8 +10,14 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ititraining.rahlati.ui.history.HistoryFragment;
 import com.ititraining.rahlati.ui.home.HomeFragment;
+import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -32,6 +38,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
+import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
+
 
 public class MainActivity extends AppCompatActivity{
 
@@ -43,6 +52,8 @@ public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private String allText = "";
+    public static DatabaseReference mDatabase;
+    public static DatabaseReference upComingRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,8 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mDatabase = FirebaseDatabase.getInstance().getReference("Trips");
+        upComingRef = mDatabase.child("UpComing");
 
 //        add button: to add new trip [Ibrahim].
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -111,7 +124,6 @@ public class MainActivity extends AppCompatActivity{
 
  */
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
