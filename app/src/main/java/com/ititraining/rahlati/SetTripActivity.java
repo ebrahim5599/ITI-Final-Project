@@ -24,6 +24,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.database.ServerValue;
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import java.io.FileInputStream;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ititraining.rahlati.MainActivity.mDatabase;
 import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
 import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
 import static com.ititraining.rahlati.ui.home.HomeFragment.upComingTrips;
@@ -147,10 +149,10 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             addTrip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    upComingTrips = new UpComingTrips(txt_date.getText().toString(),txt_time.getText().toString(),
+                    String id = mDatabase.push().getKey();
+                    upComingTrips = new UpComingTrips(id, txt_date.getText().toString(),txt_time.getText().toString(),
                             edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
-                    arrayList.add(upComingTrips);
-                    adapter.notifyDataSetChanged();
+                    mDatabase.child("UpComing").child(id).setValue(upComingTrips);
                     finish();
                 }
             });
