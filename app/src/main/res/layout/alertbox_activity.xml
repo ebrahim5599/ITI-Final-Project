@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:layout_margin="16dp"
+    tools:context=".alertbox">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reminder for your trip!!!"
+        android:textSize="18dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="35dp">
+        <Button
+            android:id="@+id/snooze"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="Snooze"
+            android:textSize="9dp"
+            android:textStyle="bold"
+            android:layout_marginRight="70dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="Cancel"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+        <Button
+            android:id="@+id/start"
+            android:layout_width="60dp"
+            android:textSize="10dp"
+
+            android:onClick="createFloatingWidget"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="Start"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+    </LinearLayout>
+
+
+</LinearLayout>
