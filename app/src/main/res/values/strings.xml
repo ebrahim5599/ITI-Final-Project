@@ -9,4 +9,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_history">History</string>
+    <string name="facebook_app_id">864283047807492</string>
+    <string name="fb_login_protocol_scheme">fb864283047807492</string>
+
 </resources>
