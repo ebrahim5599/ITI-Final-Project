@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ititraining.rahlati.ui.history.HistoryFragment;
 import com.ititraining.rahlati.ui.home.HomeFragment;
 
@@ -26,6 +28,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +37,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
+
 
     private AppBarConfiguration mAppBarConfiguration;
     private FileInputStream fis;
@@ -43,38 +48,56 @@ public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private String allText = "";
-
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        if (mUser != null) {
+            setContentView(R.layout.activity_main);
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
 //        add button: to add new trip [Ibrahim].
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            FloatingActionButton fab = findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                Intent intent = new Intent(MainActivity.this,SetTripActivity.class);
-                startActivity(intent);
-            }
-        });
+                    Intent intent = new Intent(MainActivity.this, SetTripActivity.class);
+                    startActivity(intent);
+                }
+            });
 
-        // this code enables Navigation drawer [Ibrahim].
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+            // this code enables Navigation drawer [Ibrahim].
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            // Passing each menu ID as a set of Ids because each
+            // menu should be considered as top level destinations.
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_home, R.id.nav_gallery)
+                    .setDrawerLayout(drawer)
+                    .build();
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
+            MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_share);
+            menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.nav_share){
+                        mAuth.signOut();
+                        Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                        intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                    return false;
+                }
+            });
 /*
  *  TODO: this code to receive data from Stream and pass it to HomeFragment.
  *  Internal Storage.
@@ -110,8 +133,12 @@ public class MainActivity extends AppCompatActivity{
         fragment.setAllText(allText);
 
  */
+        } else {
+            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -120,4 +147,7 @@ public class MainActivity extends AppCompatActivity{
                 || super.onSupportNavigateUp();
     }
 
+
+
 }
+
