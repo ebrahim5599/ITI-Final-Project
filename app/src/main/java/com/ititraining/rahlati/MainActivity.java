@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity{
     private FragmentTransaction fragmentTransaction;
     private String allText = "";
     public static DatabaseReference mDatabase;
-    public static DatabaseReference upComingRef;
+    public static DatabaseReference upComingRef, historyRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         mDatabase = FirebaseDatabase.getInstance().getReference("Trips");
         upComingRef = mDatabase.child("UpComing");
+        historyRef = mDatabase.child("History");
 
 //        add button: to add new trip [Ibrahim].
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -88,6 +89,17 @@ public class MainActivity extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_share);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.nav_share){
+                    Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
 /*
  *  TODO: this code to receive data from Stream and pass it to HomeFragment.
  *  Internal Storage.

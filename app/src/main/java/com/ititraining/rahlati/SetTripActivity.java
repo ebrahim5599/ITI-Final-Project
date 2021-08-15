@@ -130,6 +130,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         edt_end.setText(edit_intent.getStringExtra("END_POINT"));
         txt_date.setText(edit_intent.getStringExtra("DATE"));
         txt_time.setText(edit_intent.getStringExtra("TIME"));
+        String ID = edit_intent.getStringExtra("POSITION");
 // فاضل تعديل التاريخ والوقت
         Button addTrip = (Button) findViewById(R.id.add);
         if(edit_intent.getStringExtra("TRIP_NAME") != null){
@@ -137,10 +138,11 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             addTrip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    upComingTrips = new UpComingTrips(txt_date.getText().toString(),txt_time.getText().toString(),
-                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
-                    arrayList.set(edit_intent.getIntExtra("POSITION",0),upComingTrips);
-                    adapter.notifyDataSetChanged();
+                    UpComingTrips editedTrips = new UpComingTrips(ID, txt_date.getText().toString(),txt_time.getText().toString(),
+                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), "");
+//                    arrayList.set(edit_intent.getIntExtra("POSITION",0),upComingTrips);
+//                    adapter.notifyDataSetChanged();
+                    mDatabase.child("UpComing").child(ID).setValue(editedTrips);
                     finish();
                 }
             });
@@ -151,7 +153,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 public void onClick(View v) {
                     String id = mDatabase.push().getKey();
                     upComingTrips = new UpComingTrips(id, txt_date.getText().toString(),txt_time.getText().toString(),
-                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
+                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), "");
                     mDatabase.child("UpComing").child(id).setValue(upComingTrips);
                     finish();
                 }

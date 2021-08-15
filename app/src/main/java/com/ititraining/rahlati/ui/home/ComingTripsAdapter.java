@@ -1,15 +1,21 @@
 package com.ititraining.rahlati.ui.home;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.print.PrintAttributes;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,14 +23,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ititraining.rahlati.NoteActivity;
 import com.ititraining.rahlati.R;
 import com.ititraining.rahlati.SetTripActivity;
 
 import java.util.ArrayList;
 
+import static com.ititraining.rahlati.MainActivity.historyRef;
 import static com.ititraining.rahlati.MainActivity.upComingRef;
-import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
-import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
 
 public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
     public ComingTripsAdapter(@NonNull Context context, @NonNull ArrayList<UpComingTrips> upComingTrips) {
@@ -69,11 +75,23 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse("google.navigation:q="+endPoint));
                 getContext().startActivity(intent);
+                upComingTrips.setStatus("Done");
+                historyRef.child(upComingTrips.getId()).setValue(upComingTrips);
+                upComingRef.child(upComingTrips.getId()).removeValue();
             }
         });
 
         TextView note = convertView.findViewById(R.id.note);
         note.setText("NOTE");
+        note.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(getContext(), NoteActivity.class);
+//                intent.putExtra("ID",upComingTrips.getId());
+//                getContext().startActivity(intent);
+                showCustomDialog();
+            }
+        });
 
         TextView menu = convertView.findViewById(R.id.menu_icon);
         menu.setOnClickListener(new View.OnClickListener() {
@@ -88,12 +106,16 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                     public boolean onMenuItemClick(MenuItem item) {
 
                         if(item.getTitle().toString().contains("Note")){
-                            Toast.makeText(getContext(), "Not working yet", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Note", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getContext(), NoteActivity.class);
+                            intent.putExtra("ID",upComingTrips.getId());
+                            getContext().startActivity(intent);
                         }
+
                         if(item.getTitle().toString().contains("Edit")){
-                            Toast.makeText(getContext(), "ُEdited", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Edited", Toast.LENGTH_SHORT).show();
                             Intent edit_intent = new Intent(getContext(),SetTripActivity.class);
-                            edit_intent.putExtra("POSITION",position);
+                            edit_intent.putExtra("POSITION",upComingTrips.getId());
                             edit_intent.putExtra("DATE",upComingTrips.getDate());
                             edit_intent.putExtra("TIME",upComingTrips.getTime());
                             edit_intent.putExtra("TRIP_NAME",upComingTrips.getTripName());
@@ -101,8 +123,8 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                             edit_intent.putExtra("END_POINT",upComingTrips.getEndPoint());
                             getContext().startActivity(edit_intent);
                         }
-                        if(item.getTitle().toString().contains("Cancel")){
 
+                        if(item.getTitle().toString().contains("Cancel")){
                             new AlertDialog.Builder(getContext())
                                     .setMessage("Are you sure you want to cancel this trip?")
                                     // Specifying a listener allows you to take an action before dismissing the dialog.
@@ -111,8 +133,9 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Continue with delete operation
                                             Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+                                            upComingTrips.setStatus("Canceled");
+                                            historyRef.child(upComingTrips.getId()).setValue(upComingTrips);
                                             upComingRef.child(upComingTrips.getId()).removeValue();
-                                            adapter.notifyDataSetChanged();
                                         }
                                     })
                                     // A null listener allows the button to dismiss the dialog and take no further action.
@@ -120,6 +143,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                                     .setIcon(android.R.drawable.ic_dialog_alert)
                                     .show();
                         }
+
                         if(item.getTitle().toString().contains("Delete")){
                             new AlertDialog.Builder(getContext())
                                     .setTitle("Delete Trip!")
@@ -130,8 +154,9 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Continue with delete operation
                                             Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                                            upComingTrips.setStatus("Deleted");
+                                            historyRef.child(upComingTrips.getId()).setValue(upComingTrips);
                                             upComingRef.child(upComingTrips.getId()).removeValue();
-                                            adapter.notifyDataSetChanged();
                                         }
                                     })
                                     // A null listener allows the button to dismiss the dialog and take no further action.
@@ -145,7 +170,25 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                 popup.show(); //showing popup menu
             }
         });
-
         return convertView;
+    }
+
+    void showCustomDialog() {
+        Dialog dialog = new Dialog(getContext());
+        //Mention the name of the layout of your custom dialog.
+        dialog.setContentView(R.layout.layout_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true); //Optional
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //Setting the animations to dialog
+
+        Button Okay = dialog.findViewById(R.id.save);
+
+        dialog.show();
+        Okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }
