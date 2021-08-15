@@ -22,6 +22,7 @@ import com.ititraining.rahlati.SetTripActivity;
 
 import java.util.ArrayList;
 
+import static com.ititraining.rahlati.MainActivity.upComingRef;
 import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
 import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
 
@@ -110,7 +111,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Continue with delete operation
                                             Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
-                                            arrayList.remove(position);
+                                            upComingRef.child(upComingTrips.getId()).removeValue();
                                             adapter.notifyDataSetChanged();
                                         }
                                     })
@@ -129,7 +130,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Continue with delete operation
                                             Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                                            arrayList.remove(position);
+                                            upComingRef.child(upComingTrips.getId()).removeValue();
                                             adapter.notifyDataSetChanged();
                                         }
                                     })

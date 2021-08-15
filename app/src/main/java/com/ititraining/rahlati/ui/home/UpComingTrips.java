@@ -2,7 +2,7 @@ package com.ititraining.rahlati.ui.home;
 
 public class UpComingTrips {
 
-    private String date, time, tripName, startPoint, endPoint;
+    private String id, date, time, tripName, startPoint, endPoint;
 
     public UpComingTrips() {
     }
@@ -14,6 +14,15 @@ public class UpComingTrips {
     }
 
     public UpComingTrips(String date, String time, String tripName, String startPoint, String endPoint) {
+        this.date = date;
+        this.time = time;
+        this.tripName = tripName;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+
+    public UpComingTrips(String id, String date, String time, String tripName, String startPoint, String endPoint) {
+        this.id = id;
         this.date = date;
         this.time = time;
         this.tripName = tripName;
@@ -41,6 +50,10 @@ public class UpComingTrips {
         this.endPoint = endPoint;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getTripName() {
         return tripName;
     }
@@ -59,5 +72,9 @@ public class UpComingTrips {
 
     public String getTime() {
         return time;
+    }
+
+    public String getId() {
+        return id;
     }
 }
