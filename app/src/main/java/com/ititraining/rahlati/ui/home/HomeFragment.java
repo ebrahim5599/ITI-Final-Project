@@ -17,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.ititraining.rahlati.MainActivity;
 import com.ititraining.rahlati.R;
 import com.ititraining.rahlati.SetTripActivity;
@@ -24,6 +27,8 @@ import com.ititraining.rahlati.SetTripActivity;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.ititraining.rahlati.MainActivity.upComingRef;
 
 
 public class HomeFragment extends Fragment {
@@ -40,16 +45,14 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getContext(), allText, Toast.LENGTH_SHORT).show();
     }
 
+
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ListView listView = view.findViewById(R.id.home_listView_fragment);
         arrayList = new ArrayList<>();
-        arrayList.add(new UpComingTrips("08:00 AM","20-8-2021", "Trip 1", "Cairo", "Alex"));
-        arrayList.add(new UpComingTrips("05:00 PM","22-8-2021","Trip 2", "Tanta", "Zagazig"));
-
-
         adapter = new ComingTripsAdapter(getContext(), arrayList);
         listView.setAdapter(adapter);
         listView.setDivider(null);
@@ -65,6 +68,28 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        upComingRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrayList.clear();
+                for(DataSnapshot n: snapshot.getChildren()){
+                    UpComingTrips up = n.getValue(UpComingTrips.class);
+                    arrayList.add(up);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void setAllText(String allText){ this.allText = allText; }

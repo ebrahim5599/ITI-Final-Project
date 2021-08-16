@@ -1,22 +1,28 @@
 package com.ititraining.rahlati;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.DigitalClock;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -24,6 +30,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.database.ServerValue;
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import java.io.FileInputStream;
@@ -33,6 +40,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ititraining.rahlati.MainActivity.mDatabase;
 import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
 import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
 import static com.ititraining.rahlati.ui.home.HomeFragment.upComingTrips;
@@ -47,6 +55,15 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     ImageButton calender,alarm;
     TextView txt_date,txt_time;
     int hour,minute;
+    ////////////////////////////////////////MARINA
+    ///alarm defen
+    TimePicker timePicker;
+    ToggleButton toggleButton;
+    DigitalClock digitalClock;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
+
+    ////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +87,39 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popTimePiker();
+                ////////////////////////////////////////////////MARINA
+
+//alarm ana rington
+                setContentView(R.layout.main_alarmbox);
+                timePicker=findViewById(R.id.timepicker);
+                toggleButton=findViewById(R.id.togglebtn);
+                digitalClock= findViewById(R.id.digitalclock);
+                alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
+                toggleButton.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(View view) {
+                        if(toggleButton.isChecked()){
+                            Toast.makeText(SetTripActivity.this,"Alarm is ON",Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(SetTripActivity.this,AlarmReceiver.class);
+                            pendingIntent=PendingIntent.getBroadcast(SetTripActivity.this,0,intent,0);
+                            Calendar calendar=Calendar. getInstance();
+                            calendar.set(Calendar.HOUR_OF_DAY,timePicker.getHour());
+                            calendar.set(Calendar.MINUTE,timePicker.getMinute());
+                            long time = calendar.getTimeInMillis()-(calendar.getTimeInMillis()%60000);
+
+                            if(System.currentTimeMillis()>time){
+                                if(calendar.AM_PM==0){time=time+(1000*60*60*12);}
+                                else {time=time+(1000*60*60*24);}}
+                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,time,0,pendingIntent);
+                        }
+                        else {
+                            alarmManager.cancel(pendingIntent);
+                            Toast.makeText(SetTripActivity.this,"Alarm is OFF",Toast.LENGTH_SHORT).show(); }}});
+
+                ///////////////////////////////////////MARINA
+
+                //popTimePiker();
             }
         });
         //////////////////////////////////
@@ -147,10 +196,10 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             addTrip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    upComingTrips = new UpComingTrips(txt_date.getText().toString(),txt_time.getText().toString(),
+                    String id = mDatabase.push().getKey();
+                    upComingTrips = new UpComingTrips(id, txt_date.getText().toString(),txt_time.getText().toString(),
                             edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString());
-                    arrayList.add(upComingTrips);
-                    adapter.notifyDataSetChanged();
+                    mDatabase.child("UpComing").child(id).setValue(upComingTrips);
                     finish();
                 }
             });
@@ -202,5 +251,6 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         String date =""+ dayOfMonth + '/' + (month+1) + '/' + year;
         txt_date.setText(date);
     }
+
 
 }
