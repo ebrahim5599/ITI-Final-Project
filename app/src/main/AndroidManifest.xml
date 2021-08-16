@@ -8,19 +8,19 @@
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/facebook_app_id" />
 <!--  Permission required to draw floating widget over other apps  -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />    
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Rahlati">
+
         <activity android:name=".ui.history.HistoryNotesActivity"></activity>
         <activity android:name=".NoteActivity" />
-        <activity android:name=".SetTripActivity" />
-
 
         <activity android:name=".FacebookSignin"></activity>
         <activity android:name=".TwitterSignin" />
@@ -36,6 +36,7 @@
             android:enabled="true"
             android:exported="true"></receiver>
 
+        <activity android:name=".SetTripActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
