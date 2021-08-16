@@ -7,10 +7,11 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,46 +44,39 @@ import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private AppBarConfiguration mAppBarConfiguration;
-    private FileInputStream fis;
-    private InputStreamReader isr;
-    private BufferedReader br;
-    private HomeFragment fragment;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private String allText = "";
     public static DatabaseReference mDatabase;
-    public static DatabaseReference upComingRef, historyRef;
+    public static DatabaseReference upComingRef, historyRef, userID;
+    public static String uId;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+
         if (mUser==null) {
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
         }
+
+            uId = mUser.getUid();
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
-            mDatabase = FirebaseDatabase.getInstance().getReference("Trips");
-            upComingRef = mDatabase.child("UpComing");
-            historyRef = mDatabase.child("History");
-
+            mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+            userID = mDatabase.child(uId);
+            upComingRef = userID.child("UpComing");
+            historyRef = userID.child("History");
 
 //        add button: to add new trip [Ibrahim].
             FloatingActionButton fab = findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
                     Intent intent = new Intent(MainActivity.this, SetTripActivity.class);
                     startActivity(intent);
                 }
@@ -122,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 
 }
 

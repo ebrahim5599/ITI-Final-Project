@@ -2,7 +2,6 @@
 package com.ititraining.rahlati.ui.home;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,42 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.ititraining.rahlati.MainActivity;
 import com.ititraining.rahlati.R;
-import com.ititraining.rahlati.SetTripActivity;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-
 import static com.ititraining.rahlati.MainActivity.upComingRef;
 
 
 public class HomeFragment extends Fragment {
 
-    private String tripName, startPoint, endPoint, allText;
+    private String startPoint, endPoint;
     public static ArrayList<UpComingTrips> arrayList;
     public static UpComingTrips upComingTrips;
     public static ComingTripsAdapter adapter;
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(allText != null)
-            Toast.makeText(getContext(), allText, Toast.LENGTH_SHORT).show();
-    }
-
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -66,7 +48,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         return view;
     }
 
@@ -91,21 +72,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-    public void setAllText(String allText){ this.allText = allText; }
 }
-/*
-//            if (allText.contains(".")) {
-//                // Split it.
-//                String[] parts = allText.split("[.]");
-//                String part1 = parts[0];
-//                String part2 = parts[1];
-//                edt_number.setText(part1);
-//                edt_message.setText(part2);
-//            }
- */
-
-/*
-Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-    Uri.parse("google.navigation:q=an+address+city"))
- */

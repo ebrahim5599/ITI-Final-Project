@@ -1,7 +1,6 @@
 package com.ititraining.rahlati;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
@@ -9,7 +8,6 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -30,27 +28,18 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.firebase.database.ServerValue;
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import static com.ititraining.rahlati.MainActivity.mDatabase;
-import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
-import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
+import static com.ititraining.rahlati.MainActivity.uId;
 import static com.ititraining.rahlati.ui.home.HomeFragment.upComingTrips;
 
 public class SetTripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private MainActivity activity;
-    public static final String FILE_NAME = "main file";
-    private FileOutputStream fos;
-    private FileInputStream fis;
     EditText edt_end,edt_start;
     ImageButton calender,alarm;
     TextView txt_date,txt_time;
@@ -88,7 +77,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             @Override
             public void onClick(View v) {
                 ////////////////////////////////////////////////MARINA
-
+/*
 //alarm ana rington
                 setContentView(R.layout.main_alarmbox);
                 timePicker=findViewById(R.id.timepicker);
@@ -118,8 +107,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                             Toast.makeText(SetTripActivity.this,"Alarm is OFF",Toast.LENGTH_SHORT).show(); }}});
 
                 ///////////////////////////////////////MARINA
-
-                //popTimePiker();
+*/
+                popTimePiker();
             }
         });
         //////////////////////////////////
@@ -178,6 +167,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         txt_date.setText(edit_intent.getStringExtra("DATE"));
         txt_time.setText(edit_intent.getStringExtra("TIME"));
         String ID = edit_intent.getStringExtra("POSITION");
+        String note = edit_intent.getStringExtra("NOTE");
 // فاضل تعديل التاريخ والوقت
         Button addTrip = (Button) findViewById(R.id.add);
         if(edit_intent.getStringExtra("TRIP_NAME") != null){
@@ -186,10 +176,10 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @Override
                 public void onClick(View v) {
                     UpComingTrips editedTrips = new UpComingTrips(ID, txt_date.getText().toString(),txt_time.getText().toString(),
-                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), "");
+                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), note);
 //                    arrayList.set(edit_intent.getIntExtra("POSITION",0),upComingTrips);
 //                    adapter.notifyDataSetChanged();
-                    mDatabase.child("UpComing").child(ID).setValue(editedTrips);
+                    mDatabase.child(uId).child("UpComing").child(ID).setValue(editedTrips);
                     finish();
                 }
             });
@@ -201,7 +191,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                     String id = mDatabase.push().getKey();
                     upComingTrips = new UpComingTrips(id, txt_date.getText().toString(),txt_time.getText().toString(),
                             edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), "");
-                    mDatabase.child("UpComing").child(id).setValue(upComingTrips);
+                    mDatabase.child(uId).child("UpComing").child(id).setValue(upComingTrips);
                     finish();
                 }
             });
@@ -219,7 +209,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
 
             }
         };
-        TimePickerDialog timePickerDialog= new TimePickerDialog(this,onTimeSetListener,hour,minute,true);
+        TimePickerDialog timePickerDialog= new TimePickerDialog(this,onTimeSetListener,hour,minute,false);
         timePickerDialog.setTitle("Select Time");
         timePickerDialog.show();
 
