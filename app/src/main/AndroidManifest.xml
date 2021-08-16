@@ -36,8 +36,6 @@
             android:enabled="true"
             android:exported="true"></receiver>
 
-
-        <activity android:name=".SetTripActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

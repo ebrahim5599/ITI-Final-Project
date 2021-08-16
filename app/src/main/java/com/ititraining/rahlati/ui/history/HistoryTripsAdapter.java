@@ -17,17 +17,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.ititraining.rahlati.NoteActivity;
 import com.ititraining.rahlati.R;
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import java.util.ArrayList;
 
 import static com.ititraining.rahlati.MainActivity.historyRef;
-import static com.ititraining.rahlati.MainActivity.upComingRef;
 import static com.ititraining.rahlati.ui.history.HistoryFragment.historyAdapter;
-import static com.ititraining.rahlati.ui.history.HistoryFragment.historyArrayList;
-import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
 
 
 public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {

@@ -4,30 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
-import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.ititraining.rahlati.ui.history.HistoryFragment;
-import com.ititraining.rahlati.ui.home.HomeFragment;
-import com.ititraining.rahlati.ui.home.UpComingTrips;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -36,56 +20,37 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
-import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
-
 
 public class MainActivity extends AppCompatActivity {
 
-
     private AppBarConfiguration mAppBarConfiguration;
-    private FileInputStream fis;
-    private InputStreamReader isr;
-    private BufferedReader br;
-    private HomeFragment fragment;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private String allText = "";
     public static DatabaseReference mDatabase;
-    public static DatabaseReference upComingRef;
+    public static DatabaseReference upComingRef, historyRef, userID;
+    public static String uId;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         if (mUser != null) {
+            uId = mUser.getUid();
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Trips");
-        upComingRef = mDatabase.child("UpComing");
-
+            mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+            userID = mDatabase.child(uId);
+            upComingRef = userID.child("UpComing");
+            historyRef = userID.child("History");
 
 //        add button: to add new trip [Ibrahim].
             FloatingActionButton fab = findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                     Intent intent = new Intent(MainActivity.this, SetTripActivity.class);
                     startActivity(intent);
                 }
@@ -116,41 +81,6 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
             });
-/*
- *  TODO: this code to receive data from Stream and pass it to HomeFragment.
- *  Internal Storage.
-
-        try {
-            fis = openFileInput(FILE_NAME);
-            isr = new InputStreamReader(fis);
-            br = new BufferedReader(isr);
-
-            String temp = "";
-            while ((temp = br.readLine()) != null){
-                allText += temp;
-            }
-
-            br.close();
-            isr.close();
-            fis.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if(savedInstanceState == null){
-            fragment = new HomeFragment();
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.nav_host_fragment, fragment, "Fragment");
-            fragmentTransaction.commit();
-        }else{
-            fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("Fragment");
-        }
-
-        fragment.setAllText(allText);
-
- */
         } else {
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -164,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
-
 
 }
 

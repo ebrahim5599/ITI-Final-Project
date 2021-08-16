@@ -55,7 +55,7 @@ public class alertbox extends AppCompatActivity {
 //                createFloatingWidget(R.layout.main_alarmbox);
 //            }
 //        });
- dialog.show();
+        dialog.show();
     }
     //////////////////////////////////////////////
     /////Floating bubble
