@@ -6,16 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.print.PrintAttributes;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,10 +82,10 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
         note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), NoteActivity.class);
-//                intent.putExtra("ID",upComingTrips.getId());
-//                getContext().startActivity(intent);
-                showCustomDialog();
+                Intent intent = new Intent(getContext(), NoteActivity.class);
+                intent.putExtra("ID",upComingTrips.getId());
+                getContext().startActivity(intent);
+//                showCustomDialog();
             }
         });
 
@@ -121,6 +117,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                             edit_intent.putExtra("TRIP_NAME",upComingTrips.getTripName());
                             edit_intent.putExtra("START_POINT",upComingTrips.getStartPoint());
                             edit_intent.putExtra("END_POINT",upComingTrips.getEndPoint());
+                            edit_intent.putExtra("NOTE",upComingTrips.getNote());
                             getContext().startActivity(edit_intent);
                         }
 
