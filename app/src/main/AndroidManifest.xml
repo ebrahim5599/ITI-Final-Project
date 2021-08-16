@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rahlati">
 
+        <activity android:name=".ui.history.HistoryNotesActivity"></activity>
+        <activity android:name=".NoteActivity" />
+
         <activity android:name=".FacebookSignin"></activity>
         <activity android:name=".TwitterSignin" />
         <activity android:name=".GoogleSignin" />
@@ -32,7 +35,6 @@
             android:name=".AlarmReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
-
 
         <activity android:name=".SetTripActivity" />
         <activity

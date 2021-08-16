@@ -3,6 +3,7 @@ package com.ititraining.rahlati.ui.history;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -16,13 +17,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ititraining.rahlati.NoteActivity;
 import com.ititraining.rahlati.R;
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import java.util.ArrayList;
 
+import static com.ititraining.rahlati.MainActivity.historyRef;
+import static com.ititraining.rahlati.MainActivity.upComingRef;
 import static com.ititraining.rahlati.ui.history.HistoryFragment.historyAdapter;
 import static com.ititraining.rahlati.ui.history.HistoryFragment.historyArrayList;
+import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
 
 
 public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {
@@ -56,14 +61,16 @@ public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {
         endPoint.setText(" "+upComingTrips.getEndPoint());
 
         TextView status = convertView.findViewById(R.id.status);
-        status.setText("Deleted");
+        status.setText(upComingTrips.getStatus());
 
         TextView trip_note = convertView.findViewById(R.id.trip_note);
         trip_note.setText("SHOW NOTES");
         trip_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "No notes have been added yet", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), HistoryNotesActivity.class);
+                intent.putExtra("ID",upComingTrips.getId());
+                getContext().startActivity(intent);
             }
         });
 
@@ -80,7 +87,7 @@ public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                                historyArrayList.remove(position);
+                                historyRef.child(upComingTrips.getId()).removeValue();
                                 historyAdapter.notifyDataSetChanged();
                             }
                         })

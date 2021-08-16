@@ -15,11 +15,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.ititraining.rahlati.R;
 import com.ititraining.rahlati.ui.home.ComingTripsAdapter;
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import java.util.ArrayList;
+import static com.ititraining.rahlati.MainActivity.historyRef;
 
 public class HistoryFragment extends Fragment {
 
@@ -32,16 +36,33 @@ public class HistoryFragment extends Fragment {
 
         ListView listView = view.findViewById(R.id.history_listView_fragment);
         historyArrayList = new ArrayList<>();
-        historyArrayList.add(new UpComingTrips("08:00 AM","20-8-2021", "Trip 1", "Cairo", "Alex"));
-        historyArrayList.add(new UpComingTrips("05:00 PM","22-8-2021","Trip 2", "Tanta", "Zagazig"));
-        historyArrayList.add(new UpComingTrips("08:00 AM","20-8-2021", "Trip 1", "Cairo", "Alex"));
-        historyArrayList.add(new UpComingTrips("05:00 PM","22-8-2021","Trip 2", "Tanta", "Zagazig"));
-
         historyAdapter = new HistoryTripsAdapter(getContext(), historyArrayList);
         listView.setAdapter(historyAdapter);
         listView.setDivider(null);
 
-
         return view;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        historyRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                historyArrayList.clear();
+                for(DataSnapshot n: snapshot.getChildren()){
+                    UpComingTrips up = n.getValue(UpComingTrips.class);
+                    historyArrayList.add(up);
+                }
+                historyAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }
