@@ -62,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        if (mUser != null) {
+        if (mUser==null) {
+            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+        }
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -110,12 +113,8 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
             });
-        } else {
-            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-            intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
         }
-    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
