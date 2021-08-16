@@ -61,9 +61,10 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     ToggleButton toggleButton;
     DigitalClock digitalClock;
     AlarmManager alarmManager;
+    AlarmManager alarmManager1;
     PendingIntent pendingIntent;
 
-    ////////////////////////////////////////////////
+    ////////////////////////////////////////////////MARINA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +90,13 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             public void onClick(View v) {
                 ////////////////////////////////////////////////MARINA
 
-//alarm ana rington
-                setContentView(R.layout.main_alarmbox);
+////alarm ana rington
+
+
+
+
+
+               /* setContentView(R.layout.main_alarmbox);
                 timePicker=findViewById(R.id.timepicker);
                 toggleButton=findViewById(R.id.togglebtn);
                 digitalClock= findViewById(R.id.digitalclock);
@@ -112,14 +118,16 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                                 if(calendar.AM_PM==0){time=time+(1000*60*60*12);}
                                 else {time=time+(1000*60*60*24);}}
                             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,time,0,pendingIntent);
+
                         }
                         else {
                             alarmManager.cancel(pendingIntent);
-                            Toast.makeText(SetTripActivity.this,"Alarm is OFF",Toast.LENGTH_SHORT).show(); }}});
+                            Toast.makeText(SetTripActivity.this,"Alarm is OFF",Toast.LENGTH_SHORT).show(); }}});*/
 
                 ///////////////////////////////////////MARINA
 
-                //popTimePiker();
+               // popTimePiker();
+
             }
         });
         //////////////////////////////////
@@ -207,24 +215,40 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             });
         }
     }
-
+///////////////////////////////////////////////////////////////////////////////////////MARINA
     private void popTimePiker() {
+
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
-            public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
+            public void onTimeSet(TimePicker timePicker1, int selectedHour, int selectedMinute) {
+
                 hour=selectedHour;
                 minute=selectedMinute;
                 String Time=""+hour+":"+minute;
                 txt_time.setText(Time);
+//                Toast.makeText(SetTripActivity.this,"Alarm is ON",Toast.LENGTH_SHORT).show();
+//               Intent intent=new Intent(SetTripActivity.this,AlarmReceiver.class);
+//                pendingIntent=PendingIntent.getBroadcast(SetTripActivity.this,0,intent,0);
+//                Calendar calendar=Calendar. getInstance();
+//                calendar.set(Calendar.HOUR_OF_DAY,timePicker1.getHour());
+//                calendar.set(Calendar.MINUTE,timePicker1.getMinute());
+//               long time = calendar.getTimeInMillis()-(calendar.getTimeInMillis()%60000);
+//                if(System.currentTimeMillis()>time){
+//                    if(calendar.AM_PM==0){time=time+(1000*60*60*12);}
+//                   else {time=time+(1000*60*60*24);}}
+//                alarmManager1.setRepeating(AlarmManager.RTC_WAKEUP,time,0,pendingIntent);
 
-            }
-        };
+            }  };
         TimePickerDialog timePickerDialog= new TimePickerDialog(this,onTimeSetListener,hour,minute,true);
         timePickerDialog.setTitle("Select Time");
         timePickerDialog.show();
+        //////////////////////////////////
+
+        /////////////////////////////////////////////////////////////////////////
 
     }
-
+///////////////////////////////////////////////////////////////////////////////////MARINA
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -248,11 +272,28 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 );
         datePickerDialog.show();
     }
+//////////////////////////////////////////////////////////////////////////////////MARINA
+    private void showTimePikerDialog(){
+      TimePickerDialog timePickerDialog=new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                  @Override
+                  public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                      txt_time.setText( selectedHour + ":" + selectedMinute);
+                  }
+              }, hour, minute, true);//Yes 24 hour time
+       timePickerDialog.setTitle("Select Time");
+       ////////////////////////////////////////////////////////////////////////MARINA
+       timePickerDialog.show(); }
+////////////////////////////////////////////////////////////////////////////MARINA
+
+
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date =""+ dayOfMonth + '/' + (month+1) + '/' + year;
         txt_date.setText(date);
     }
+
+
 
 
 }
