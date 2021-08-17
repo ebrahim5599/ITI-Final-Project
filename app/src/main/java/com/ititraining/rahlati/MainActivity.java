@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             mDatabase = FirebaseDatabase.getInstance().getReference("Users");
             userID = mDatabase.child(uId);
+            mDatabase.keepSynced(true);
             upComingRef = userID.child("UpComing");
             historyRef = userID.child("History");
 
