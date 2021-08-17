@@ -1,4 +1,4 @@
-package com.ititraining.rahlati;
+package com.ititraining.rahlati.ui.floatingbubble;
 
 import android.app.Service;
 import android.content.Intent;
@@ -18,6 +18,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import com.ititraining.rahlati.MainActivity;
+import com.ititraining.rahlati.R;
+import com.ititraining.rahlati.ui.home.NoteActivityDialog;
+
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
     private WindowManager mWindowManager;
@@ -308,42 +313,46 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
             }
         });
     }
-////////////////////////////////////////////////
+
     private void implementClickListeners() {
         mFloatingWidgetView.findViewById(R.id.close_floating_view).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.close_expanded_view).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.floating_widget_note).setOnClickListener(this);
     }
-///////////////////
-@Override
-public void onClick(View v) {
-    switch (v.getId()) {
-        case R.id.close_floating_view:
-            //close the service and remove the from from the window
-            stopSelf();
-            break;
 
-        case R.id.floating_widget_note:
-            Toast.makeText(this, "Open Trip Notes", Toast.LENGTH_SHORT).show();
-            // Open note Activity or Layout.
-            break;
 
-        case R.id.close_expanded_view:
-            collapsedView.setVisibility(View.VISIBLE);
-            expandedView.setVisibility(View.GONE);
-            break;
-        case R.id.open_activity_button:
-            //open the activity and stop service
-            Intent intent = new Intent(FloatingWidgetService.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.close_floating_view:
+                //close the service and remove the from from the window
+                stopSelf();
+                break;
 
-            //close the service and remove view from the view hierarchy
-            stopSelf();
-            break;
+            case R.id.floating_widget_note:
+                Toast.makeText(this, "Open Trip Notes", Toast.LENGTH_SHORT).show();
+                // Open note Activity or Layout.
+                showCustomDialog();
+
+                break;
+
+            case R.id.close_expanded_view:
+                collapsedView.setVisibility(View.VISIBLE);
+                expandedView.setVisibility(View.GONE);
+                break;
+            case R.id.open_activity_button:
+                //open the activity and stop service
+                Intent intent = new Intent(FloatingWidgetService.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+                //close the service and remove view from the view hierarchy
+                stopSelf();
+                break;
+        }
     }
-}
+
     /*  on Floating Widget Long Click, increase the size of remove view as it look like taking focus */
     private void onFloatingWidgetLongClick() {
         //Get remove Floating view params
@@ -434,7 +443,7 @@ public void onClick(View v) {
 
     /*  Get Bounce value if you want to make bounce effect to your Floating Widget */
     private double bounceValue(long step, long scale) {
-        double value = scale * Math.exp(-0.055 * step) * Math.cos(0.08 * step);
+        double value = scale * java.lang.Math.exp(-0.055 * step) * java.lang.Math.cos(0.08 * step);
         return value;
     }
 
@@ -508,5 +517,10 @@ public void onClick(View v) {
 
     }
 
+    void showCustomDialog() {
+        Intent notificationIntent = new Intent(this, BubbleNoteActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(notificationIntent);
+    }
 
 }

@@ -1,10 +1,12 @@
 package com.ititraining.rahlati;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -12,19 +14,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.ititraining.rahlati.ui.history.HistoryFragment;
-import com.ititraining.rahlati.ui.home.HomeFragment;
-import com.ititraining.rahlati.ui.home.UpComingTrips;
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import com.ititraining.rahlati.ui.floatingbubble.FloatingWidgetService;
+
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,14 +26,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import org.jetbrains.annotations.NotNull;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import static com.ititraining.rahlati.ui.home.HomeFragment.adapter;
-import static com.ititraining.rahlati.ui.home.HomeFragment.arrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,8 +34,12 @@ public class MainActivity extends AppCompatActivity {
     public static DatabaseReference mDatabase;
     public static DatabaseReference upComingRef, historyRef, userID;
     public static String uId = "kim";
+    public static String tripID = "No Notes added for this Trip";
+    private String Note;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    /*  Permission request code to draw over other apps  */
+    private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +110,49 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE) {
+            //Check if the permission is granted or not.
+            if (resultCode == RESULT_OK)
+                //If permission granted start floating widget service
+                startFloatingWidgetService();
+            else
+                //Permission is not available then display toast
+                Toast.makeText(this,
+                        getResources().getString(R.string.draw_other_app_permission_denied),
+                        Toast.LENGTH_SHORT).show();
 
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    /*  start floating widget service  */
+    public void createFloatingWidget(String note) {
+        Note = note;
+        //Check if the application has draw over other apps permission or not?
+        //This permission is by default available for API<23. But for API > 23
+        //you have to ask for the permission in runtime.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE);
+        } else
+            //If permission is granted start floating widget service
+            startFloatingWidgetService();
+
+    }
+
+    /*  Start Floating widget service and finish current activity */
+    private void startFloatingWidgetService() {
+        Intent n = new Intent(MainActivity.this, FloatingWidgetService.class);
+        n.putExtra("Note", Note);
+        startService(n);
+        finish();
+    }
 
 }
 

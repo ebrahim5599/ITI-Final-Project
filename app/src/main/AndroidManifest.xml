@@ -2,42 +2,48 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ititraining.rahlati">
 
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
-        android:value="@string/facebook_app_id" /> <!-- Permission required to draw floating widget over other apps -->
-
+        android:value="@string/facebook_app_id" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".Rahlati"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
-        android:name=".Rahlati"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Rahlati">
-        <activity android:name=".ui.alarm.CustomDialog" android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
 
-
-        <activity android:name=".ui.history.HistoryNotesActivity" />
-        <activity android:name=".NoteActivity" />
+        <activity android:name=".ui.floatingbubble.BubbleNoteActivity"
+            android:label="Notes"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".ui.home.NoteActivityDialog"
+            android:label="Notes"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".ui.alarm.CustomDialog"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".ui.history.HistoryNotesActivity"
+            android:label="Notes"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity android:name=".FacebookSignin" />
         <activity android:name=".TwitterSignin" />
         <activity android:name=".GoogleSignin" />
         <activity android:name=".Register" />
         <activity android:name=".LoginActivity" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDRNgB1phbFiZBDgC99nXcFrYmXowzlaB8"></meta-data>
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDRNgB1phbFiZBDgC99nXcFrYmXowzlaB8" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -46,12 +52,17 @@
             android:name=".alertbox"
             android:exported="true" />
 
-        <service android:name=".ui.alarm.AlarmService"
+        <service
+            android:name=".ui.alarm.AlarmService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".ui.floatingbubble.FloatingWidgetService"
+            android:enabled="true"
+            android:exported="false" />
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".ui.alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
 
@@ -70,7 +81,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
     </application>
 
 </manifest>

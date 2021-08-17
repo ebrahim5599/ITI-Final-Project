@@ -4,13 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:orientation="vertical"
     tools:context=".ui.history.HistoryFragment">
+
 
     <ListView
         android:id="@+id/history_listView_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        tools:context=".ui.home.HistoryFragment" />
+        tools:context=".ui.home.HistoryFragment" >
+
+    </ListView>
 
 </LinearLayout>
