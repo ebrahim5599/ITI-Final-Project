@@ -1,14 +1,10 @@
-package com.ititraining.rahlati;
+package com.ititraining.rahlati.ui.alarm;
         import android.content.BroadcastReceiver;
         import android.content.Context;
         import android.content.Intent;
         import android.os.Build;
-        import android.widget.Toast;
 
         import androidx.annotation.RequiresApi;
-
-        import com.ititraining.rahlati.ui.alarm.AlarmService;
-        import com.ititraining.rahlati.ui.alarm.CustomDialog;
 
 
 public class AlarmReceiver extends BroadcastReceiver{

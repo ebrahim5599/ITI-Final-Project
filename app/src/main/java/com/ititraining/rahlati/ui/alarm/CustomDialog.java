@@ -3,6 +3,7 @@ package com.ititraining.rahlati.ui.alarm;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.ititraining.rahlati.MainActivity;
 import com.ititraining.rahlati.R;
 
 public class CustomDialog extends AppCompatActivity {
@@ -35,7 +37,20 @@ public class CustomDialog extends AppCompatActivity {
         btn_snooze = findViewById(R.id.snooze1);
         btn_cancel = findViewById(R.id.cancel1);
 
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ringtone != null){
+                    ringtone.stop();
+                    ringtone = null;
+                    stopService(new Intent(getApplicationContext(), AlarmService.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }
+            }
+        });
+
+        btn_snooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(ringtone != null){
@@ -45,5 +60,18 @@ public class CustomDialog extends AppCompatActivity {
                 }
             }
         });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ringtone != null){
+                    ringtone.stop();
+                    ringtone = null;
+                    stopService(new Intent(getApplicationContext(), AlarmService.class));
+                    finish();
+                }
+            }
+        });
+
     }
 }

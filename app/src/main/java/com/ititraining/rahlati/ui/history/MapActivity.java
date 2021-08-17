@@ -30,16 +30,21 @@ import java.util.List;
 import java.util.Random;
 
 public class MapActivity  extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
+
     String start_point, end_point;
-    MapActivity(String  start_point,String end_point){
-    this.start_point=start_point;
-     this.end_point=end_point; }
     private GoogleMap mMap;
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
+
+    MapActivity(String  start_point, String end_point){
+        this.start_point=start_point;
+        this.end_point=end_point;
+    }
+
     Random random = new Random();
     int rand_color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
     List<MarkerOptions> markerOptionsList=new ArrayList<>();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_container_history);
@@ -48,9 +53,10 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
         place2 = new MarkerOptions().position(getLocationFromAddress(end_point));
         markerOptionsList.add(place1);
         markerOptionsList.add(place2);
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFreg);
-        mapFragment.getMapAsync(this);
+//        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag);
+//        mapFragment.getMapAsync(this);
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -60,6 +66,7 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
         mMap.addPolyline((new PolylineOptions()).add( getLocationFromAddress(start_point),getLocationFromAddress(end_point)).width(5).color(rand_color).geodesic(true));
         showAllMarkers();
     }
+
     private void showAllMarkers(){
         LatLngBounds.Builder builder=new LatLngBounds.Builder();
         for(MarkerOptions m:markerOptionsList){
@@ -72,14 +79,13 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
         CameraUpdate cameraUpdate= CameraUpdateFactory.newLatLngBounds(bounds,width,height,padding);
         mMap.animateCamera(cameraUpdate);
     }
+
     @Override
     public void onTaskDone(Object... values) {
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
-
-
 
     public LatLng getLocationFromAddress(String strAddress){
 
