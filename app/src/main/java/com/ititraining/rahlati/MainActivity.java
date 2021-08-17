@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     public static DatabaseReference mDatabase;
     public static DatabaseReference upComingRef, historyRef, userID;
-    public static String uId;
+    public static String uId = "kim";
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
@@ -60,9 +60,11 @@ public class MainActivity extends AppCompatActivity {
         if (mUser==null) {
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
+            finish();
+        }else{
+            uId = mUser.getUid();
         }
 
-            uId = mUser.getUid();
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
