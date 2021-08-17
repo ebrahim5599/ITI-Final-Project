@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ititraining.rahlati.R;
+
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import java.util.ArrayList;
@@ -37,8 +38,9 @@ public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_container_history,
                     parent,false);
-        }
 
+        }
+//MapActivity mapActivity =new MapActivity();
         UpComingTrips upComingTrips = (UpComingTrips) getItem(position);
 
         TextView date = convertView.findViewById(R.id.date_view);
@@ -110,4 +112,7 @@ public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {
 
         return convertView;
     }
+
+
+
 }
