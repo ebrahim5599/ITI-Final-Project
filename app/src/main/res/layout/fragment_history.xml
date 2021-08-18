@@ -4,13 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".ui.history.HistoryFragment">
+    tools:context=".ui.history.HistoryFragment"
+    android:orientation="vertical">
 
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/fragmentContainerView"-->
+<!--        android:name="com.ititraining.rahlati.ui.history.HistoryMapFragment"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="140dp" />-->
     <ListView
         android:id="@+id/history_listView_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        tools:context=".ui.home.HistoryFragment" />
+        tools:context=".ui.home.HistoryFragment" >
+
+
+    </ListView>
 
 </LinearLayout>
