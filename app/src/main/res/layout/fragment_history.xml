@@ -5,31 +5,19 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     tools:context=".ui.history.HistoryFragment"
-    android:orientation="vertical">
-
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:id="@+id/fragmentContainerView"-->
-<!--        android:name="com.ititraining.rahlati.ui.history.HistoryMapFragment"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="140dp" />-->
-
+    android:orientation="horizontal">
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/shoemap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SHOW MAP"
-        android:onClick="showMap"
-        />
+        android:text="SHOW MAP"/>
 
     <ListView
         android:id="@+id/history_listView_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        tools:context=".ui.home.HistoryFragment" >
-
-
-    </ListView>
+        tools:context=".ui.home.HistoryFragment" />
 
 </LinearLayout>

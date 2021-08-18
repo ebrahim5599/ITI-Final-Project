@@ -7,6 +7,14 @@
     android:orientation="vertical">
 
 
+    <fragment
+        android:id="@+id/mapFreg"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@+id/rvToolbar"
+        android:layout_weight="1" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

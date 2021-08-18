@@ -27,10 +27,9 @@ import java.util.ArrayList;
 import static com.ititraining.rahlati.MainActivity.historyRef;
 
 public class HistoryFragment extends Fragment {
-
+    Button showmap;
     public static ArrayList<UpComingTrips> historyArrayList;
     public static HistoryTripsAdapter historyAdapter;
-    Button showMap;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -41,17 +40,15 @@ public class HistoryFragment extends Fragment {
         historyAdapter = new HistoryTripsAdapter(getContext(), historyArrayList);
         listView.setAdapter(historyAdapter);
         listView.setDivider(null);
-        ///////////////
-        showMap=view.findViewById(R.id.button2);
-        showMap.setOnClickListener(new View.OnClickListener() {
+        showmap=view.findViewById(R.id.shoemap);
+        showmap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view.findViewById(R.id.mapFreg);
-               // setContentView(R.layout.);
+                Intent intent;
+                intent = new Intent(view.getContext(), MapActivity.class);
+                view.getContext().startActivity(intent);
             }
         });
-        ///////////
-
         return view;
     }
 
@@ -76,6 +73,5 @@ public class HistoryFragment extends Fragment {
             }
         });
     }
-
 
 }
