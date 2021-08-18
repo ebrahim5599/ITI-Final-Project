@@ -12,6 +12,16 @@
 <!--        android:name="com.ititraining.rahlati.ui.history.HistoryMapFragment"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="140dp" />-->
+
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SHOW MAP"
+        android:onClick="showMap"
+        />
+
     <ListView
         android:id="@+id/history_listView_fragment"
         android:layout_width="match_parent"

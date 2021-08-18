@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class HistoryFragment extends Fragment {
 
     public static ArrayList<UpComingTrips> historyArrayList;
     public static HistoryTripsAdapter historyAdapter;
+    Button showMap;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -39,6 +41,16 @@ public class HistoryFragment extends Fragment {
         historyAdapter = new HistoryTripsAdapter(getContext(), historyArrayList);
         listView.setAdapter(historyAdapter);
         listView.setDivider(null);
+        ///////////////
+        showMap=view.findViewById(R.id.button2);
+        showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.findViewById(R.id.mapFreg);
+               // setContentView(R.layout.);
+            }
+        });
+        ///////////
 
         return view;
     }
@@ -64,5 +76,6 @@ public class HistoryFragment extends Fragment {
             }
         });
     }
+
 
 }
