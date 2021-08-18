@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -135,6 +136,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         String note = edit_intent.getStringExtra("NOTE");
 // فاضل تعديل التاريخ والوقت
         Button addTrip = (Button) findViewById(R.id.add);
+        Button addRoundTrip = (Button) findViewById(R.id.add_round_trip);
+
         if(edit_intent.getStringExtra("TRIP_NAME") != null){
             addTrip.setText("EDIT TRIP INFO");
             addTrip.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +164,31 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                             edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), "");
                     mDatabase.child(uId).child("UpComing").child(id).setValue(upComingTrips);
                     setAlarm();
+
+                    String text = way_spinner.getSelectedItem().toString();
+                    if(text == "One Way")
+                        finish();
+                    else{
+                        addTrip.setVisibility(View.GONE);
+                        addRoundTrip.setVisibility(View.VISIBLE);
+                        String roundId = mDatabase.push().getKey();
+                        String name = edt_trip_name.getText().toString()+" (Back)";
+                        String start = edt_end.getText().toString();
+                        String end = edt_start.getText().toString();
+                        edt_trip_name.setText(name);
+                        edt_start.setText(start);
+                        edt_end.setText(end);
+                        upComingTrips = new UpComingTrips(roundId, txt_date.getText().toString(),txt_time.getText().toString(),name, start, end,"");
+                        mDatabase.child(uId).child("UpComing").child(roundId).setValue(upComingTrips);
+                        setAlarm();
+                    }
+                }
+            });
+
+            addRoundTrip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    repetition_spinner.setVisibility(View.GONE);
                     finish();
                 }
             });
