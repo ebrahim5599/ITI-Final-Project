@@ -29,21 +29,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MapActivity  extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     String start_point, end_point;
     private GoogleMap mMap;
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
 
-    MapActivity(String  start_point, String end_point){
-        this.start_point=start_point;
-        this.end_point=end_point;
+    MapActivity(String start_point, String end_point) {
+        this.start_point = start_point;
+        this.end_point = end_point;
     }
 
     Random random = new Random();
     int rand_color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
-    List<MarkerOptions> markerOptionsList=new ArrayList<>();
+    List<MarkerOptions> markerOptionsList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,20 +63,20 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("mylog", "Added Markers");
         mMap.addMarker(place1);
         mMap.addMarker(place2);
-        mMap.addPolyline((new PolylineOptions()).add( getLocationFromAddress(start_point),getLocationFromAddress(end_point)).width(5).color(rand_color).geodesic(true));
+        mMap.addPolyline((new PolylineOptions()).add(getLocationFromAddress(start_point), getLocationFromAddress(end_point)).width(5).color(rand_color).geodesic(true));
         showAllMarkers();
     }
 
-    private void showAllMarkers(){
-        LatLngBounds.Builder builder=new LatLngBounds.Builder();
-        for(MarkerOptions m:markerOptionsList){
+    private void showAllMarkers() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (MarkerOptions m : markerOptionsList) {
             builder.include(m.getPosition());
         }
-        LatLngBounds bounds=builder.build();
-        int width=getResources().getDisplayMetrics().widthPixels;
-        int height=getResources().getDisplayMetrics().heightPixels;
-        int padding=(int)(width*.30);
-        CameraUpdate cameraUpdate= CameraUpdateFactory.newLatLngBounds(bounds,width,height,padding);
+        LatLngBounds bounds = builder.build();
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * .30);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         mMap.animateCamera(cameraUpdate);
     }
 
@@ -87,18 +87,18 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 
-    public LatLng getLocationFromAddress(String strAddress){
+    public LatLng getLocationFromAddress(String strAddress) {
 
         Geocoder coder = new Geocoder(this);
         List<Address> address;
         GeoPoint p1 = null;
         LatLng latLng = null;
         try {
-            address = coder.getFromLocationName(strAddress,5);
-            if (address==null) {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
                 return null;
             }
-            Address location=address.get(0);
+            Address location = address.get(0);
             location.getLatitude();
             location.getLongitude();
 
@@ -108,10 +108,11 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
 
             double lat = p1.getLatitude();
             double lng = p1.getLongitude();
-             latLng = new LatLng(lat, lng);
+            latLng = new LatLng(lat, lng);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  latLng ; }
+        return latLng;
+    }
 }
