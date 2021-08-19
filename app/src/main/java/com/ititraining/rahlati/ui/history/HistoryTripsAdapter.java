@@ -40,7 +40,7 @@ public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {
                     parent,false);
 
         }
-//MapActivity mapActivity =new MapActivity("Damietta,Qism Damietta,Damietta Desert,Damietta Governorate,Egypt","Harayah Raznah,Zagazig,Ash Sharqia Governoment,Egypt");
+//MapActivity mapActivity =new MapActivity();
         UpComingTrips upComingTrips = (UpComingTrips) getItem(position);
 
         TextView date = convertView.findViewById(R.id.date_view);
