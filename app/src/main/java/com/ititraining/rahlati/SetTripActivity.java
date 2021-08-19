@@ -10,8 +10,10 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -70,12 +72,12 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_trip);
-
         EditText edt_trip_name = (EditText) findViewById(R.id.trip_name);
         edt_start = (EditText) findViewById(R.id.start);
         edt_end = (EditText) findViewById(R.id.end);
         calender = findViewById(R.id.calbtm);
         alarm = findViewById(R.id.alarmbtn);
+
         //////////////////////////////////
         SharedPreferences sh = getSharedPreferences(ALARM_ID, MODE_PRIVATE);
         SharedPreferences.Editor editor = sh.edit();
@@ -88,7 +90,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 showDatePikerDialog();
             }
         });
-        //////////////////////////////////
+
         ///Alarm.
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +98,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 popTimePiker();
             }
         });
-        //////////////////////////////////
+
         // Spinner 1 [Repetition].
         Spinner repetition_spinner = (Spinner) findViewById(R.id.repetition_spinner);
         String repetition_array[] = {"No Repeat", "Repeat Daily", "Repeat Weekly", "Repeat Monthly"};
@@ -114,7 +116,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         // Date and Time TextViews.
         txt_date = (TextView) findViewById(R.id.date);
         txt_time = (TextView) findViewById(R.id.time);
-        //////////////////////////
+
         //initialize Places.
         Places.initialize(getApplicationContext(), "AIzaSyD7qztjBaBRKNSYqnuB3Nf55uGE1uQYJpA");
         //start point.
@@ -128,7 +130,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 startActivityForResult(intent, 100);
             }
         });
-        /////////////////////////
+
         //end point.
         edt_end.setFocusable(false);
         edt_end.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +142,6 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 startActivityForResult(intent1, 110);
             }
         });
-        //////////////////////////////
 
         TextView txt_date = (TextView) findViewById(R.id.date);
         TextView txt_time = (TextView) findViewById(R.id.time);
@@ -154,7 +155,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         String ID = edit_intent.getStringExtra("POSITION");
         String note = edit_intent.getStringExtra("NOTE");
         int alarm = edit_intent.getIntExtra("ALARM", 0);
-// فاضل تعديل التاريخ والوقت
+
         Button addTrip = (Button) findViewById(R.id.add);
         Button addRoundTrip = (Button) findViewById(R.id.add_round_trip);
 
@@ -166,8 +167,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 public void onClick(View v) {
                     UpComingTrips editedTrips = new UpComingTrips(ID, txt_date.getText().toString(), txt_time.getText().toString(),
                             edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), note, alarm);
-//                    arrayList.set(edit_intent.getIntExtra("POSITION",0),upComingTrips);
-//                    adapter.notifyDataSetChanged();
+                  
                     mDatabase.child(uId).child("UpComing").child(ID).setValue(editedTrips);
 //                    setAlarm();
                     setAlarm1(editedTrips.getAlarmId());
@@ -180,7 +180,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    
+                    checkOverlayPermission();
                     String id = mDatabase.push().getKey();
                     alarmId = sh.getInt(ALARM_ID, 0) + 1;
                     editor.putInt(ALARM_ID, alarmId);
@@ -289,12 +290,13 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
     }
 
+    //Put Places in edittext start & end.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 100 && resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
-            //edt_end.setText(place.getAddress());
             edt_start.setText(place.getAddress());
         } else if (requestCode == 110 && resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
@@ -303,11 +305,13 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
-
     }
 
+
+    //Show dialog to pick Date.
     private void showDatePikerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, this::onDateSet,
+
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -322,6 +326,18 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         sDay = dayOfMonth;
         String date = "" + dayOfMonth + '/' + (month + 1) + '/' + year;
         txt_date.setText(date);
+    }
+
+    //Checking Overlay permission.
+    public void checkOverlayPermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                // send user to the device settings
+                Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                startActivity(myIntent);
+            }
+        }
     }
 
 }

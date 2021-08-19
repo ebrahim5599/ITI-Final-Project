@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ititraining.rahlati">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -41,6 +42,10 @@
         <activity android:name=".Register" />
         <activity android:name=".LoginActivity" />
 
+      
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDzTHI4DXKFwrM0xAzwnI-Brz1_3UkcL7g"></meta-data>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDRNgB1phbFiZBDgC99nXcFrYmXowzlaB8" />
@@ -77,6 +82,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.history.MapActivity"
+            tools:ignore="Instantiatable" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

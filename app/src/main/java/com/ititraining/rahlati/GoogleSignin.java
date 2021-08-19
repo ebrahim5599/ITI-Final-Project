@@ -65,6 +65,7 @@ public class GoogleSignin extends LoginActivity {
                 }
             }
         }
+        //Put user's information in firebase.
         private void firebaseAuthWithGoogle(String idToken) {
             AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
             mAuth.signInWithCredential(credential)
@@ -85,12 +86,10 @@ public class GoogleSignin extends LoginActivity {
                         }
                     });
         }
-
+    //Send user to the home Page.
    private void updateUI(FirebaseUser user) {
         Intent intent= new Intent(GoogleSignin.this,MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
-
     }
 }

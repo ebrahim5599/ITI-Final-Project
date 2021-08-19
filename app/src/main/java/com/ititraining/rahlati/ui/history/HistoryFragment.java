@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import static com.ititraining.rahlati.MainActivity.historyRef;
 
 public class HistoryFragment extends Fragment {
-
+    Button showmap;
     public static ArrayList<UpComingTrips> historyArrayList;
     public static HistoryTripsAdapter historyAdapter;
 
@@ -39,7 +40,15 @@ public class HistoryFragment extends Fragment {
         historyAdapter = new HistoryTripsAdapter(getContext(), historyArrayList);
         listView.setAdapter(historyAdapter);
         listView.setDivider(null);
-
+        showmap=view.findViewById(R.id.shoemap);
+        showmap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(view.getContext(), MapActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
         return view;
     }
 
