@@ -1,29 +1,33 @@
 package com.ititraining.rahlati.ui.history;
+
+
+import android.graphics.Color;
+
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.ititraining.rahlati.R;
-import com.ititraining.rahlati.ui.history.DirectionHelper.FetchURL;
 import com.ititraining.rahlati.ui.history.DirectionHelper.TaskLoadedCallback;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+
 public class MapActivity  extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
  String start_point="Damietta",end_point="Zagazig";
@@ -43,6 +47,7 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
     //random variable to give each trip markers a different color.
     float r=new Random().nextInt(360);
     //map to put poliline , murkers ,and the direction on.
+
     private GoogleMap mMap;
     //the markers that show the location of the start state and the end  state on the map.
     private MarkerOptions place1, place2;
@@ -53,6 +58,7 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_history_map);
         //the button when pressed shows the Direction
  getDirection = findViewById(R.id.btnGetDirection);
@@ -66,6 +72,7 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
         place1 = new MarkerOptions().position(getLatLngFromAddress(start_point)).icon(BitmapDescriptorFactory.defaultMarker(r));
         place2 = new MarkerOptions().position(getLatLngFromAddress(end_point)).icon(BitmapDescriptorFactory.defaultMarker(r));
        markerOptionsList.add(place1);
+
         markerOptionsList.add(place2);
         //creat  map fragment
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFreg);
@@ -80,7 +87,9 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("mylog", "Added Markers");
         mMap.addMarker(place1);
         mMap.addMarker(place2);
+
         mMap.addPolyline((new PolylineOptions()).add(getLatLngFromAddress(start_point),getLatLngFromAddress(end_point)));
+
         showAllMarkers();
     }
 
@@ -103,6 +112,7 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
+
    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
@@ -137,6 +147,7 @@ private LatLng getLatLngFromAddress(String address) {
     } catch (Exception e) {
         e.printStackTrace();
         return null;
+
     }
 
 }

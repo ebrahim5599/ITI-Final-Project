@@ -10,8 +10,10 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -61,8 +63,10 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     int sYear;
     int sMonth;
     int sDay;
+    private String roundId , name ,start, end;
     public static final String ALARM_ID = "trip";
     public int alarmId;
+    public static Alarm newAlarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +154,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         txt_time.setText(edit_intent.getStringExtra("TIME"));
         String ID = edit_intent.getStringExtra("POSITION");
         String note = edit_intent.getStringExtra("NOTE");
-// فاضل تعديل التاريخ والوقت
+        int alarm = edit_intent.getIntExtra("ALARM", 0);
+
         Button addTrip = (Button) findViewById(R.id.add);
         Button addRoundTrip = (Button) findViewById(R.id.add_round_trip);
 
@@ -161,11 +166,11 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @Override
                 public void onClick(View v) {
                     UpComingTrips editedTrips = new UpComingTrips(ID, txt_date.getText().toString(), txt_time.getText().toString(),
-                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), note);
-//                    arrayList.set(edit_intent.getIntExtra("POSITION",0),upComingTrips);
-//                    adapter.notifyDataSetChanged();
+                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), note, alarm);
+                  
                     mDatabase.child(uId).child("UpComing").child(ID).setValue(editedTrips);
-                    setAlarm();
+//                    setAlarm();
+                    setAlarm1(editedTrips.getAlarmId());
                     finish();
                 }
             });
@@ -175,7 +180,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    
+                    checkOverlayPermission();
                     String id = mDatabase.push().getKey();
                     alarmId = sh.getInt(ALARM_ID, 0) + 1;
                     editor.putInt(ALARM_ID, alarmId);
@@ -193,22 +199,15 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                     else {
                         addTrip.setVisibility(View.GONE);
                         addRoundTrip.setVisibility(View.VISIBLE);
-                        String roundId = mDatabase.push().getKey();
-                        String name = edt_trip_name.getText().toString() + " (Back)";
-                        String start = edt_end.getText().toString();
-                        String end = edt_start.getText().toString();
+                        roundId = mDatabase.push().getKey();
+                        name = edt_trip_name.getText().toString() + " (Back)";
+                        start = edt_end.getText().toString();
+                        end = edt_start.getText().toString();
                         edt_trip_name.setText(name);
                         edt_start.setText(start);
                         edt_end.setText(end);
-
-                        alarmId = sh.getInt(ALARM_ID, 0) + 1;
-                        editor.putInt(ALARM_ID, alarmId);
-                        editor.commit();
-
-                        upComingTrips = new UpComingTrips(roundId, txt_date.getText().toString(), txt_time.getText().toString(), name, start, end, "", alarmId);
-                        mDatabase.child(uId).child("UpComing").child(roundId).setValue(upComingTrips);
-//                        setAlarm();
-//                        setAlarm1(alarmId);
+                        txt_date.setText("");
+                        txt_time.setText("");
                     }
                 }
             });
@@ -217,6 +216,17 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @Override
                 public void onClick(View v) {
                     repetition_spinner.setVisibility(View.GONE);
+                    String d = txt_date.getText().toString();
+                    String t =txt_time.getText().toString();
+
+                    alarmId = sh.getInt(ALARM_ID, 0) + 1;
+                    editor.putInt(ALARM_ID, alarmId);
+                    editor.commit();
+
+                    upComingTrips = new UpComingTrips(roundId, d, t, name, start, end, "", alarmId);
+                    mDatabase.child(uId).child("UpComing").child(roundId).setValue(upComingTrips);
+//                        setAlarm();
+                    setAlarm1(alarmId);
                     finish();
                 }
             });
@@ -250,8 +260,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
 
     private void setAlarm1(int ID) {
 
-        Alarm alarm = new Alarm(ID, sHour, sMinute, sDay, sMonth, sYear, true);
-        alarm.schedule(getApplicationContext());
+        newAlarm = new Alarm(ID, sHour, sMinute, sDay, sMonth, sYear, true);
+        newAlarm.schedule(getApplicationContext());
 
 
     }
@@ -279,13 +289,14 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,time,0,pendingIntent);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
     }
+
     //Put Places in edittext start & end.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==100 && resultCode==RESULT_OK){
-            Place place=Autocomplete.getPlaceFromIntent(data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(data);
             edt_start.setText(place.getAddress());
         } else if (requestCode == 110 && resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
@@ -296,6 +307,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         }
     }
 
+
+    //Show dialog to pick Date.
     private void showDatePikerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, this::onDateSet,
 
@@ -315,5 +328,16 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         txt_date.setText(date);
     }
 
+    //Checking Overlay permission.
+    public void checkOverlayPermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                // send user to the device settings
+                Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                startActivity(myIntent);
+            }
+        }
+    }
 
 }
