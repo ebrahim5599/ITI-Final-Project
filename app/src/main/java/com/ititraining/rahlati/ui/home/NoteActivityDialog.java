@@ -1,25 +1,24 @@
-package com.ititraining.rahlati;
+package com.ititraining.rahlati.ui.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.ititraining.rahlati.ui.home.UpComingTrips;
+import com.ititraining.rahlati.R;
 
-import static com.ititraining.rahlati.MainActivity.historyRef;
+import static com.ititraining.rahlati.MainActivity.tripID;
 import static com.ititraining.rahlati.MainActivity.upComingRef;
 
-public class NoteActivity extends AppCompatActivity {
+public class NoteActivityDialog extends AppCompatActivity {
 
     private EditText note;
     private String noteTitle, id, text = null;
@@ -27,13 +26,17 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note);
 
-        note = (EditText) findViewById(R.id.note_title);
-        Button btn_save = (Button) findViewById(R.id.save);
+        setContentView(R.layout.activity_note_dialog);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; // added 11:34
+
+        note = (EditText) findViewById(R.id.note_dialog);
+        Button btn_save = (Button) findViewById(R.id.save_dialog);
 
         Intent n = getIntent();
         id = n.getStringExtra("ID");
+        tripID = id;
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
