@@ -3,22 +3,8 @@ package com.ititraining.rahlati.ui.home;
 public class UpComingTrips {
 
     private String id, date, time, tripName, startPoint, endPoint, status, note;
-
+    private int alarmId;
     public UpComingTrips() {
-    }
-
-    public UpComingTrips(String tripName, String startPoint, String endPoint) {
-        this.tripName = tripName;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-    }
-
-    public UpComingTrips(String date, String time, String tripName, String startPoint, String endPoint) {
-        this.date = date;
-        this.time = time;
-        this.tripName = tripName;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
     }
 
     public UpComingTrips(String id, String date, String time, String tripName, String startPoint, String endPoint) {
@@ -39,6 +25,21 @@ public class UpComingTrips {
         this.endPoint = endPoint;
         this.status = status;
         this.note = note;
+    }
+
+    public UpComingTrips(String id, String date, String time, String tripName, String startPoint, String endPoint, String note, int alarmId) {
+        this.id = id;
+        this.date = date;
+        this.time = time;
+        this.tripName = tripName;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.note = note;
+        this.alarmId = alarmId;
+    }
+
+    public void setAlarmId(int alarmId) {
+        this.alarmId = alarmId;
     }
 
     public void setDate(String date) {
@@ -103,6 +104,10 @@ public class UpComingTrips {
 
     public String getNote() {
         return note;
+    }
+
+    public int getAlarmId() {
+        return alarmId;
     }
 }
 
