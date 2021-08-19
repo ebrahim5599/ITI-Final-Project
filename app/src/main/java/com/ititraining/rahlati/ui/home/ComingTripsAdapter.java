@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import static com.ititraining.rahlati.MainActivity.historyRef;
 import static com.ititraining.rahlati.MainActivity.tripID;
 import static com.ititraining.rahlati.MainActivity.upComingRef;
+import static com.ititraining.rahlati.SetTripActivity.newAlarm;
 
 public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
 
@@ -87,9 +88,6 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
         note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), NoteActivity.class);
-//                intent.putExtra("ID",upComingTrips.getId());
-//                getContext().startActivity(intent);
                 tripID = upComingTrips.getId();
                 Intent intent = new Intent(getContext(), NoteActivityDialog.class);
                 intent.putExtra("ID",upComingTrips.getId());
@@ -127,6 +125,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                             edit_intent.putExtra("START_POINT",upComingTrips.getStartPoint());
                             edit_intent.putExtra("END_POINT",upComingTrips.getEndPoint());
                             edit_intent.putExtra("NOTE",upComingTrips.getNote());
+                            edit_intent.putExtra("ALARM", upComingTrips.getAlarmId());
                             getContext().startActivity(edit_intent);
                         }
 
@@ -142,6 +141,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                                             upComingTrips.setStatus("Canceled");
                                             historyRef.child(upComingTrips.getId()).setValue(upComingTrips);
                                             upComingRef.child(upComingTrips.getId()).removeValue();
+                                            newAlarm.cancelAlarm(getContext(), upComingTrips.getAlarmId());
                                         }
                                     })
                                     // A null listener allows the button to dismiss the dialog and take no further action.
@@ -163,6 +163,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                                             upComingTrips.setStatus("Deleted");
                                             historyRef.child(upComingTrips.getId()).setValue(upComingTrips);
                                             upComingRef.child(upComingTrips.getId()).removeValue();
+                                            newAlarm.cancelAlarm(getContext(), upComingTrips.getAlarmId());
                                         }
                                     })
                                     // A null listener allows the button to dismiss the dialog and take no further action.
