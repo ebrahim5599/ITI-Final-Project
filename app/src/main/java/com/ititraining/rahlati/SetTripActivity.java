@@ -10,8 +10,10 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -63,6 +65,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     int sDay;
     public static final String ALARM_ID = "trip";
     public int alarmId;
+    private static final int DRAW_OVER_OTHER_APP_MISSION_REQUEST_CODE = 1444;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +179,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @Override
                 public void onClick(View v) {
                     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    checkOverlayPermission();
                     String id = mDatabase.push().getKey();
                     alarmId = sh.getInt(ALARM_ID, 0) + 1;
                     editor.putInt(ALARM_ID, alarmId);
@@ -209,6 +213,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                         mDatabase.child(uId).child("UpComing").child(roundId).setValue(upComingTrips);
 //                        setAlarm();
 //                        setAlarm1(alarmId);
+
                     }
                 }
             });
@@ -279,13 +284,14 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,time,0,pendingIntent);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
     }
+
     //Put Places in edittext start & end.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==100 && resultCode==RESULT_OK){
-            Place place=Autocomplete.getPlaceFromIntent(data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(data);
             edt_start.setText(place.getAddress());
         } else if (requestCode == 110 && resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
@@ -294,8 +300,9 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
 
+    }
+    //Show dialog to pick Date.
     private void showDatePikerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, this::onDateSet,
 
@@ -314,6 +321,15 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         String date = "" + dayOfMonth + '/' + (month + 1) + '/' + year;
         txt_date.setText(date);
     }
+    //Checking Overlay permission.
+    public void checkOverlayPermission() {
 
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                // send user to the device settings
+                Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                startActivity(myIntent);
+            }
+        }
+    }
 }
