@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".ui.history.HistoryFragment">
 
+  
+    <Button
+        android:id="@+id/shoemap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SHOW MAP"/>
 
     <ListView
         android:id="@+id/history_listView_fragment"
