@@ -8,6 +8,7 @@ public class Rahlati extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //Set persistence enabled to enable offline capabilities.
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
     }

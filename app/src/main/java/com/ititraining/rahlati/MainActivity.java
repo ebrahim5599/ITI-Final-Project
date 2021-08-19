@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
+        //Checking if it's the first time to the user to login.
+        //Or already he have an account and he dose not log out.
         if (mUser==null) {
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
             mDatabase = FirebaseDatabase.getInstance().getReference("Users");
             userID = mDatabase.child(uId);
+            //Enable offline capabilities to keep data synced.
             mDatabase.keepSynced(true);
             upComingRef = userID.child("UpComing");
             historyRef = userID.child("History");
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
             MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_share);
+            //Log out the user form account and open Login activity.
             menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
