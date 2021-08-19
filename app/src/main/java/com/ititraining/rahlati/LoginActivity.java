@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         forgetPassword=findViewById(R.id.forgetPassword);
+        //Initialize new account option (Open register activity).
         createnewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,36 +61,44 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //Initialize Login Button.
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performLogin();
             }
         });
+        //Initialize Google Button.
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //open google activity.
                 Intent intent= new Intent(LoginActivity.this,GoogleSignin.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
         });
+        //Initialize Facebook Button.
         btnFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //open facebook activity.
                 Intent intent= new Intent(LoginActivity.this,FacebookSignin.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
         });
+        //Initialize Twitter Button.
         btnTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //open twitter activity.
                 Intent intent= new Intent(LoginActivity.this,TwitterSignin.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
         });
+        //Initialize Forget Password option.
         forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
         });
     }
-
+    //Open a dialog to get user email and recover user's password.
     private void showForgetPassDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         LinearLayout linearLayout=new LinearLayout(this);
@@ -124,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
-
+    //Sending recovery email to the user.
     private void beginRecovery(String email) {
         progressDialog.setMessage("Sending email....");
         progressDialog.show();
@@ -146,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+    //Checking if email and password are correct and perform login.
     private void performLogin() {
         String email = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
@@ -154,12 +163,13 @@ public class LoginActivity extends AppCompatActivity {
         if (!email.matches(emailPattern)) {
             inputEmail.setError("Enter Correct Email");
         } else if (password.isEmpty() || password.length() < 6) {
-            inputPassword.setError("Enter Proper Password");
+            inputPassword.setError("Enter Proper Password above 6 letters");
         } else {
             progressDialog.setMessage("Please Wait While Login....");
             progressDialog.setTitle("Login");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
+            //Email and password authentication.
             mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -176,6 +186,7 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
+    //Send user to the Home page if the Sign in is successful.
     private void sendUserToNextActivity() {
         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
         intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

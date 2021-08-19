@@ -25,8 +25,6 @@ import java.util.Arrays;
 public class FacebookSignin extends LoginActivity {
 
     CallbackManager callbackManager;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,17 +36,12 @@ public class FacebookSignin extends LoginActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         handleFacebookAccessToken(loginResult.getAccessToken());
-
                     }
-
                     @Override
                     public void onCancel() {
-                        // App code
                     }
-
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
                     }
                 });
     }
@@ -62,8 +55,6 @@ public class FacebookSignin extends LoginActivity {
 
     }
     private void handleFacebookAccessToken(AccessToken token) {
-
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -71,18 +62,16 @@ public class FacebookSignin extends LoginActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(FacebookSignin.this,""+task.getException(),Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 });
     }
-
+    //send user to Home page.
     private void updateUI(FirebaseUser user) {
         Intent intent= new Intent(FacebookSignin.this,MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

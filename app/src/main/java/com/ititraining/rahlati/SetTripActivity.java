@@ -55,13 +55,12 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_trip);
-
         EditText edt_trip_name = (EditText) findViewById(R.id.trip_name);
         edt_start = (EditText) findViewById(R.id.start);
         edt_end = (EditText) findViewById(R.id.end);
         calender = findViewById(R.id.calbtm);
         alarm = findViewById(R.id.alarmbtn);
-        //////////////////////////////////
+
         //Calender.
         calender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +68,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 showDatePikerDialog();
             }
         });
-        //////////////////////////////////
+
         ///Alarm.
         alarm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +76,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 popTimePiker();
             }
         });
-        //////////////////////////////////
+
         // Spinner 1 [Repetition].
         Spinner repetition_spinner = (Spinner) findViewById(R.id.repetition_spinner);
         String repetition_array[] = {"No Repeat", "Repeat Daily", "Repeat Weekly", "Repeat Monthly"};
@@ -95,7 +94,8 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         // Date and Time TextViews.
          txt_date = (TextView) findViewById(R.id.date);
          txt_time = (TextView) findViewById(R.id.time);
-        //////////////////////////
+
+
         //initialize Places.
         Places.initialize(getApplicationContext(),"AIzaSyD7qztjBaBRKNSYqnuB3Nf55uGE1uQYJpA");
         //start point.
@@ -109,7 +109,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 startActivityForResult(intent,100);
             }
         });
-        /////////////////////////
+
         //end point.
         edt_end.setFocusable(false);
         edt_end.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +121,6 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 startActivityForResult(intent1,110);
             }
         });
-        //////////////////////////////
 
         TextView txt_date = (TextView) findViewById(R.id.date);
         TextView txt_time = (TextView) findViewById(R.id.time);
@@ -207,13 +206,12 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,time,0,pendingIntent);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
     }
-
+    //Put Places in edittext start & end.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==100 && resultCode==RESULT_OK){
             Place place=Autocomplete.getPlaceFromIntent(data);
-            //edt_end.setText(place.getAddress());
             edt_start.setText(place.getAddress());
         }else if(requestCode==110 && resultCode==RESULT_OK){
             Place place=Autocomplete.getPlaceFromIntent(data);
@@ -223,6 +221,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             Toast.makeText(getApplicationContext(),status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+    //Date Picker.
     private void showDatePikerDialog(){
         DatePickerDialog datePickerDialog=new DatePickerDialog(this,this::onDateSet,
                 Calendar.getInstance().get(Calendar.YEAR),
