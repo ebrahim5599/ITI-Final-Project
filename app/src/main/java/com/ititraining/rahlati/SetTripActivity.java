@@ -151,6 +151,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         String ID = edit_intent.getStringExtra("POSITION");
         String note = edit_intent.getStringExtra("NOTE");
         int alarm = edit_intent.getIntExtra("ALARM", 0);
+        int h, m, Y, M, D;
 
 
         Button addTrip = (Button) findViewById(R.id.add);
