@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".ui.history.HistoryFragment"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    tools:context=".ui.history.HistoryFragment">
 
+  
     <Button
         android:id="@+id/shoemap"
         android:layout_width="match_parent"
@@ -18,6 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        tools:context=".ui.home.HistoryFragment" />
+        tools:context=".ui.home.HistoryFragment" >
+
+    </ListView>
 
 </LinearLayout>

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class MapActivity  extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
  /////////////////////////////////////////
  Context context = ApplicationProvider.getApplicationContext();
@@ -50,12 +51,20 @@ public class MapActivity  extends AppCompatActivity implements OnMapReadyCallbac
   /////////////////////
  Button getDirection;
 float r=new Random().nextInt(360);
+
     private GoogleMap mMap;
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
+
+    MapActivity(String start_point, String end_point) {
+        this.start_point = start_point;
+        this.end_point = end_point;
+    }
+
     Random random = new Random();
     int rand_color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
-    List<MarkerOptions> markerOptionsList=new ArrayList<>();
+    List<MarkerOptions> markerOptionsList = new ArrayList<>();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_map);
@@ -76,10 +85,9 @@ float r=new Random().nextInt(360);
 
        markerOptionsList.add(place1);
         markerOptionsList.add(place2);
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFreg);
-        mapFragment.getMapAsync(this);
+//        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFrag);
+//        mapFragment.getMapAsync(this);
     }
-
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -88,20 +96,23 @@ float r=new Random().nextInt(360);
         mMap.addMarker(place1);
         mMap.addMarker(place2);
         mMap.addPolyline((new PolylineOptions()).add(start_point_lat,end_point_lat).width(5).color(rand_color).geodesic(true));
+
         showAllMarkers();
     }
-    private void showAllMarkers(){
-        LatLngBounds.Builder builder=new LatLngBounds.Builder();
-        for(MarkerOptions m:markerOptionsList){
+
+    private void showAllMarkers() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (MarkerOptions m : markerOptionsList) {
             builder.include(m.getPosition());
         }
-        LatLngBounds bounds=builder.build();
-        int width=getResources().getDisplayMetrics().widthPixels;
-        int height=getResources().getDisplayMetrics().heightPixels;
-        int padding=(int)(width*.30);
-        CameraUpdate cameraUpdate= CameraUpdateFactory.newLatLngBounds(bounds,width,height,padding);
+        LatLngBounds bounds = builder.build();
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * .30);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         mMap.animateCamera(cameraUpdate);
     }
+
     @Override
     public void onTaskDone(Object... values) {
         if (currentPolyline != null)
@@ -152,42 +163,4 @@ float r=new Random().nextInt(360);
 
         return p1;
     }
-
-
-
-
-
-
-
-
-
-
-
-   /* public LatLng getLocationFromAddress(String strAddress){
-
-        Geocoder coder = new Geocoder(this);
-        List<Address> address;
-        GeoPoint p1 = null;
-        LatLng latLng = null;
-        try {
-            address = coder.getFromLocationName(strAddress,5);
-            if (address==null) {
-                return null;
-            }
-            Address location=address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
-            p1 = new GeoPoint((double) (location.getLatitude() * 1E6),
-                    (double) (location.getLongitude() * 1E6));
-
-
-            double lat = p1.getLatitude();
-            double lng = p1.getLongitude();
-             latLng = new LatLng(lat, lng);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return  latLng ; }*/
 }
