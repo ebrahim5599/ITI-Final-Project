@@ -25,10 +25,10 @@ public class TwitterSignin extends LoginActivity {
         provider.addCustomParameter("lang", "fr");
         Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
         if (pendingResultTask != null) {
-            // There's something already here! Finish the sign-in for your user.
             pendingResultTask.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
+                                    //Send user to home page.
                                     startActivity(new Intent(TwitterSignin.this,MainActivity.class));
                                     Toast.makeText(TwitterSignin.this, "Login Successful.", Toast.LENGTH_SHORT).show();
                                 }

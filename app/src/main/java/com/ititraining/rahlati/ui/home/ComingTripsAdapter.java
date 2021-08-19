@@ -19,16 +19,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.ititraining.rahlati.NoteActivity;
+import com.ititraining.rahlati.MainActivity;
 import com.ititraining.rahlati.R;
 import com.ititraining.rahlati.SetTripActivity;
 
 import java.util.ArrayList;
 
 import static com.ititraining.rahlati.MainActivity.historyRef;
+import static com.ititraining.rahlati.MainActivity.tripID;
 import static com.ititraining.rahlati.MainActivity.upComingRef;
 
 public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
+
+    MainActivity activity = (MainActivity) getContext();
+
     public ComingTripsAdapter(@NonNull Context context, @NonNull ArrayList<UpComingTrips> upComingTrips) {
         super(context, 0, upComingTrips);
     }
@@ -72,6 +76,7 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
                         Uri.parse("google.navigation:q="+endPoint));
                 getContext().startActivity(intent);
                 upComingTrips.setStatus("Done");
+                activity.createFloatingWidget(upComingTrips.getNote());
                 historyRef.child(upComingTrips.getId()).setValue(upComingTrips);
                 upComingRef.child(upComingTrips.getId()).removeValue();
             }
@@ -82,10 +87,13 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
         note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), NoteActivity.class);
+//                Intent intent = new Intent(getContext(), NoteActivity.class);
+//                intent.putExtra("ID",upComingTrips.getId());
+//                getContext().startActivity(intent);
+                tripID = upComingTrips.getId();
+                Intent intent = new Intent(getContext(), NoteActivityDialog.class);
                 intent.putExtra("ID",upComingTrips.getId());
                 getContext().startActivity(intent);
-//                showCustomDialog();
             }
         });
 
@@ -103,7 +111,8 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
 
                         if(item.getTitle().toString().contains("Note")){
                             Toast.makeText(getContext(), "Note", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getContext(), NoteActivity.class);
+                            tripID = upComingTrips.getId();
+                            Intent intent = new Intent(getContext(), NoteActivityDialog.class);
                             intent.putExtra("ID",upComingTrips.getId());
                             getContext().startActivity(intent);
                         }
@@ -188,4 +197,6 @@ public class ComingTripsAdapter extends ArrayAdapter<UpComingTrips> {
             }
         });
     }
+
+
 }

@@ -40,13 +40,16 @@ public class Register extends AppCompatActivity {
         progressDialog=new ProgressDialog(this);
         mAuth =FirebaseAuth.getInstance();
         mUser=mAuth.getCurrentUser();
+        //initialize already have an account option.
         alreadyHaveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //open Login activity.
                 startActivity(new Intent(Register.this,LoginActivity.class));
                 finish();
             }
         });
+        //Initialize register button.
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +57,7 @@ public class Register extends AppCompatActivity {
             }
         });
     }
-
+    //check if the email is correct and password equals confirm password.
     private void performAuth() {
         String email=inputEmail.getText().toString();
         String password=inputPassword.getText().toString();
@@ -62,7 +65,7 @@ public class Register extends AppCompatActivity {
         if(!email.matches(emailPattern)){
             inputEmail.setError("Enter Correct Email");
         }else if(password.isEmpty() || password.length()<6){
-            inputPassword.setError("Enter Proper Password");
+            inputPassword.setError("Enter Proper Password above 6 letters");
         }else if(!password.equals(confirmPassword)){
             inputConfirmPassword.setError("Password Not match Both field");
         }else {
@@ -70,7 +73,7 @@ public class Register extends AppCompatActivity {
             progressDialog.setTitle("Registration");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
-
+            //Email and Password authentication.
             mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -87,7 +90,7 @@ public class Register extends AppCompatActivity {
             });
         }
     }
-
+    //Send user to the Home page if the Register is successful.
     private void sendUserToNextActivity() {
         Intent intent=new Intent(Register.this,MainActivity.class);
         intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
