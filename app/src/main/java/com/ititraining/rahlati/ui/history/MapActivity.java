@@ -26,11 +26,18 @@ import java.util.List;
 import java.util.Random;
 public class MapActivity  extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
- //String start_point="Damietta",end_point="Zagazig";
-    String start_point,end_point;
+ String start_point="Damietta",end_point="Zagazig";
+    /*String start_point,end_point;
     MapActivity(String  start_point,String end_point){
-         this.start_point=start_point;
-       this.end_point=end_point; }
+
+        String[] separated_start = start_point.split(",");
+        this.start_point=separated_start[0];
+        String[] separated_end = end_point.split(",");
+        this.start_point=separated_end[0];
+
+//         this.start_point=start_point;
+//       this.end_point=end_point;
+     }*/
     //button to show the direction betwen the start state and the end  state .
      Button getDirection;
     //random variable to give each trip markers a different color.
