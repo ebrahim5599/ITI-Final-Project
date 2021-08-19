@@ -58,11 +58,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     TimePicker timePicker;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
-    int sHour;
-    int sMinute;
-    int sYear;
-    int sMonth;
-    int sDay;
+    int sHour, sMinute, sYear, sMonth, sDay;
     private String roundId , name ,start, end;
     public static final String ALARM_ID = "trip";
     public int alarmId;
@@ -156,6 +152,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         String note = edit_intent.getStringExtra("NOTE");
         int alarm = edit_intent.getIntExtra("ALARM", 0);
 
+
         Button addTrip = (Button) findViewById(R.id.add);
         Button addRoundTrip = (Button) findViewById(R.id.add_round_trip);
 
@@ -170,7 +167,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                   
                     mDatabase.child(uId).child("UpComing").child(ID).setValue(editedTrips);
 //                    setAlarm();
-                    setAlarm1(editedTrips.getAlarmId());
+                    edtAlarm(editedTrips.getAlarmId());
                     finish();
                 }
             });
@@ -259,13 +256,13 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     }
 
     private void setAlarm1(int ID) {
-
         newAlarm = new Alarm(ID, sHour, sMinute, sDay, sMonth, sYear, true);
         newAlarm.schedule(getApplicationContext());
-
-
     }
 
+    private void edtAlarm(int ID){
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setAlarm() {
