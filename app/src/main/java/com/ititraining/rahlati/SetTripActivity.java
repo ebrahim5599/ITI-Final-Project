@@ -64,6 +64,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     public int alarmId;
     public static Alarm newAlarm;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
