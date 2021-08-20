@@ -14,6 +14,12 @@ import android.widget.Button;
 import com.ititraining.rahlati.MainActivity;
 import com.ititraining.rahlati.R;
 
+import static com.ititraining.rahlati.MainActivity.historyRef;
+import static com.ititraining.rahlati.MainActivity.upComingRef;
+import static com.ititraining.rahlati.SetTripActivity.newAlarm;
+import static com.ititraining.rahlati.ui.home.ComingTripsAdapter.trips;
+import static com.ititraining.rahlati.ui.home.HomeFragment.upComingTrips;
+
 public class CustomDialog extends AppCompatActivity {
 
     Button btn_start;
@@ -67,6 +73,7 @@ public class CustomDialog extends AppCompatActivity {
                 if(ringtone != null){
                     ringtone.stop();
                     ringtone = null;
+//                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     stopService(new Intent(getApplicationContext(), AlarmService.class));
                     finish();
                 }

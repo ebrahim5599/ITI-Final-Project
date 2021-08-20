@@ -40,7 +40,7 @@ public class HistoryTripsAdapter extends ArrayAdapter<UpComingTrips> {
                     parent,false);
 
         }
-//MapActivity mapActivity =new MapActivity();
+
         UpComingTrips upComingTrips = (UpComingTrips) getItem(position);
 
         TextView date = convertView.findViewById(R.id.date_view);
