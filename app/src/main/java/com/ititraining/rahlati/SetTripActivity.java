@@ -59,7 +59,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
     int sHour, sMinute, sYear, sMonth, sDay;
-    private String roundId , name ,start, end;
+    private String roundId, name, start, end;
     public static final String ALARM_ID = "trip";
     public int alarmId;
     public static Alarm newAlarm;
@@ -166,7 +166,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 public void onClick(View v) {
                     UpComingTrips editedTrips = new UpComingTrips(ID, txt_date.getText().toString(), txt_time.getText().toString(),
                             edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), note, alarm);
-                  
+
                     mDatabase.child(uId).child("UpComing").child(ID).setValue(editedTrips);
 //                    setAlarm();
                     edtAlarm(editedTrips.getAlarmId());
@@ -179,34 +179,41 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    
-                    checkOverlayPermission();
-                    String id = mDatabase.push().getKey();
-                    alarmId = sh.getInt(ALARM_ID, 0) + 1;
-                    editor.putInt(ALARM_ID, alarmId);
-                    editor.commit();
+                    if (edt_trip_name.getText().toString().trim().isEmpty() || edt_start.getText().toString().trim().isEmpty() ||
+                            edt_end.getText().toString().trim().isEmpty() || txt_date.getText().toString().trim().isEmpty() ||
+                            txt_time.getText().toString().trim().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Please, Complete required data.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        checkOverlayPermission();
+                        String id = mDatabase.push().getKey();
+                        alarmId = sh.getInt(ALARM_ID, 0) + 1;
+                        editor.putInt(ALARM_ID, alarmId);
+                        editor.commit();
 
-                    upComingTrips = new UpComingTrips(id, txt_date.getText().toString(), txt_time.getText().toString(),
-                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), "", alarmId);
-                    mDatabase.child(uId).child("UpComing").child(id).setValue(upComingTrips);
+                        upComingTrips = new UpComingTrips(id, txt_date.getText().toString(), txt_time.getText().toString(),
+                                edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), "", alarmId);
+                        mDatabase.child(uId).child("UpComing").child(id).setValue(upComingTrips);
 //                    setAlarm();
-                    setAlarm1(alarmId);
+                        setAlarm1(alarmId);
 
-                    String text = way_spinner.getSelectedItem().toString();
-                    if (text == "One Way")
-                        finish();
-                    else {
-                        addTrip.setVisibility(View.GONE);
-                        addRoundTrip.setVisibility(View.VISIBLE);
-                        roundId = mDatabase.push().getKey();
-                        name = edt_trip_name.getText().toString() + " (Back)";
-                        start = edt_end.getText().toString();
-                        end = edt_start.getText().toString();
-                        edt_trip_name.setText(name);
-                        edt_start.setText(start);
-                        edt_end.setText(end);
-                        txt_date.setText("");
-                        txt_time.setText("");
+                        String text = way_spinner.getSelectedItem().toString();
+                        if (text == "One Way")
+                            finish();
+                        else {
+                            addTrip.setVisibility(View.GONE);
+                            repetition_spinner.setVisibility(View.GONE);
+                            way_spinner.setVisibility(View.GONE);
+                            addRoundTrip.setVisibility(View.VISIBLE);
+                            roundId = mDatabase.push().getKey();
+                            name = edt_trip_name.getText().toString() + " (Back)";
+                            start = edt_end.getText().toString();
+                            end = edt_start.getText().toString();
+                            edt_trip_name.setText(name);
+                            edt_start.setText(start);
+                            edt_end.setText(end);
+                            txt_date.setText("");
+                            txt_time.setText("");
+                        }
                     }
                 }
             });
@@ -214,22 +221,31 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
             addRoundTrip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    repetition_spinner.setVisibility(View.GONE);
+
                     String d = txt_date.getText().toString();
-                    String t =txt_time.getText().toString();
+                    String t = txt_time.getText().toString();
 
                     alarmId = sh.getInt(ALARM_ID, 0) + 1;
                     editor.putInt(ALARM_ID, alarmId);
                     editor.commit();
 
-                    upComingTrips = new UpComingTrips(roundId, d, t, name, start, end, "", alarmId);
-                    mDatabase.child(uId).child("UpComing").child(roundId).setValue(upComingTrips);
+
+                    if (edt_trip_name.getText().toString().trim().isEmpty() || edt_start.getText().toString().trim().isEmpty() ||
+                            edt_end.getText().toString().trim().isEmpty() || txt_date.getText().toString().trim().isEmpty() ||
+                            txt_time.getText().toString().trim().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Please, Complete required data.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        upComingTrips = new UpComingTrips(roundId, d, t, name, start, end, "", alarmId);
+                        mDatabase.child(uId).child("UpComing").child(roundId).setValue(upComingTrips);
 //                        setAlarm();
-                    setAlarm1(alarmId);
-                    finish();
+                        setAlarm1(alarmId);
+                        finish();
+                    }
                 }
             });
         }
+
+//        }
     }
 
     private void popTimePiker() {
@@ -262,7 +278,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         newAlarm.schedule(getApplicationContext());
     }
 
-    private void edtAlarm(int ID){
+    private void edtAlarm(int ID) {
 
     }
 
