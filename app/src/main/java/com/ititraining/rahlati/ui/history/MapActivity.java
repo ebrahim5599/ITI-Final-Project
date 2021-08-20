@@ -1,5 +1,6 @@
 package com.ititraining.rahlati.ui.history;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -43,6 +44,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 //       this.end_point=end_point;
      }*/
 
+
+
+
     //button to show the direction betwen the start state and the end  state .
     Button getDirection;
     //random variable to give each trip markers a different color.
@@ -64,6 +68,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         //the button when pressed shows the Direction
         getDirection = findViewById(R.id.btnGetDirection);
         //the Click Listener of the button
+
+        Intent n = getIntent();
+//        start_point = n.getStringExtra("START_POINT");
+//        end_point = n.getStringExtra("END_POINT");
+
         getDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
