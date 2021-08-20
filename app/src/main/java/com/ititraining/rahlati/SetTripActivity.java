@@ -65,7 +65,6 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
     int sDay;
     public static final String ALARM_ID = "trip";
     public int alarmId;
-    private static final int DRAW_OVER_OTHER_APP_MISSION_REQUEST_CODE = 1444;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static DatabaseReference upComingRef, historyRef, userID;
     public static String uId = "kim";
     public static String tripID = "No Notes added for this Trip";
-    private String Note;
+    private String Note,email1;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else {
             uId = mUser.getUid();
+            email1=mUser.getEmail();
         }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -103,6 +106,14 @@ public class MainActivity extends AppCompatActivity {
         // this code enables Navigation drawer [Ibrahim].
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView drawerHeaderImage = (ImageView) headerView.findViewById(R.id.app_img);
+        drawerHeaderImage.setImageResource(R.drawable.appimage);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.namebar);
+        navUsername.setText("Rahlati");
+        TextView navEmail= (TextView)headerView.findViewById(R.id.nav_email);
+        navEmail.setText(email1);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(

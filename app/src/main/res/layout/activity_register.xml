@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Register"
-    android:background="@drawable/background1">
+    android:background="@drawable/background2">
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#99000000"/>
+        android:background="#6D000000"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/nav_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
@@ -61,7 +61,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/nav_email" />
 
             <EditText
                 android:id="@+id/input_password"

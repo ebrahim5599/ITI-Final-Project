@@ -8,6 +8,7 @@
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/facebook_app_id" />
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -20,8 +21,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Rahlati">
+        <activity android:name=".SplashScrean"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name=".ui.floatingbubble.BubbleNoteActivity"
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.floatingbubble.BubbleNoteActivity"
             android:label="Notes"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
@@ -74,7 +84,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
