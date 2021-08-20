@@ -47,6 +47,8 @@ public class HistoryFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent;
                 intent = new Intent(view.getContext(), MapActivity.class);
+//                intent.putExtra("START_POINT", );
+//                intent.putExtra("END_POINT", );
                 view.getContext().startActivity(intent);
             }
         });
