@@ -15,10 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,7 +33,6 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.ititraining.rahlati.ui.alarm.Alarm;
 import com.ititraining.rahlati.ui.alarm.AlarmReceiver;
-import com.ititraining.rahlati.ui.alarm.AlarmService;
 import com.ititraining.rahlati.ui.home.UpComingTrips;
 
 import java.text.SimpleDateFormat;
@@ -43,7 +40,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import static com.ititraining.rahlati.MainActivity.mDatabase;
 import static com.ititraining.rahlati.MainActivity.uId;
@@ -147,12 +143,11 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         edt_trip_name.setText(edit_intent.getStringExtra("TRIP_NAME"));
         edt_start.setText(edit_intent.getStringExtra("START_POINT"));
         edt_end.setText(edit_intent.getStringExtra("END_POINT"));
-        txt_date.setText(edit_intent.getStringExtra("DATE"));
-        txt_time.setText(edit_intent.getStringExtra("TIME"));
+        txt_date.setText("");
+        txt_time.setText("");
         String ID = edit_intent.getStringExtra("POSITION");
         String note = edit_intent.getStringExtra("NOTE");
         int alarm = edit_intent.getIntExtra("ALARM", 0);
-        int h, m, Y, M, D;
 
 
         Button addTrip = (Button) findViewById(R.id.add);
@@ -164,13 +159,18 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    UpComingTrips editedTrips = new UpComingTrips(ID, txt_date.getText().toString(), txt_time.getText().toString(),
-                            edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), note, alarm);
+                    if (edt_trip_name.getText().toString().trim().isEmpty() || edt_start.getText().toString().trim().isEmpty() ||
+                            edt_end.getText().toString().trim().isEmpty() || txt_date.getText().toString().trim().isEmpty() ||
+                            txt_time.getText().toString().trim().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Please, Edit data and time and required data.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        UpComingTrips editedTrips = new UpComingTrips(ID, txt_date.getText().toString(), txt_time.getText().toString(),
+                                edt_trip_name.getText().toString(), edt_start.getText().toString(), edt_end.getText().toString(), note, alarm);
 
-                    mDatabase.child(uId).child("UpComing").child(ID).setValue(editedTrips);
-//                    setAlarm();
-                    edtAlarm(editedTrips.getAlarmId());
-                    finish();
+                        mDatabase.child(uId).child("UpComing").child(ID).setValue(editedTrips);
+                        setAlarm1(editedTrips.getAlarmId());
+                        finish();
+                    }
                 }
             });
         } else {
@@ -278,7 +278,7 @@ public class SetTripActivity extends AppCompatActivity implements DatePickerDial
         newAlarm.schedule(getApplicationContext());
     }
 
-    private void edtAlarm(int ID) {
+    private void editAlarm(int ID) {
 
     }
 

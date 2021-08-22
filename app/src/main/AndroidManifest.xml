@@ -45,7 +45,7 @@
             android:name=".ui.history.HistoryNotesActivity"
             android:label="Notes"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".FacebookSignin" />
+        <activity android:name=".FacebookSignIn" />
         <activity android:name=".TwitterSignin" />
         <activity android:name=".GoogleSignin" />
         <activity android:name=".Register" />
@@ -57,10 +57,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity
-            android:name=".alertbox"
-            android:exported="true" />
 
         <service
             android:name=".ui.alarm.AlarmService"

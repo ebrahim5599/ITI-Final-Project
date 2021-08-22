@@ -2,7 +2,6 @@ package com.ititraining.rahlati.ui.alarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -13,12 +12,6 @@ import android.widget.Button;
 
 import com.ititraining.rahlati.MainActivity;
 import com.ititraining.rahlati.R;
-
-import static com.ititraining.rahlati.MainActivity.historyRef;
-import static com.ititraining.rahlati.MainActivity.upComingRef;
-import static com.ititraining.rahlati.SetTripActivity.newAlarm;
-import static com.ititraining.rahlati.ui.home.ComingTripsAdapter.trips;
-import static com.ititraining.rahlati.ui.home.HomeFragment.upComingTrips;
 
 public class CustomDialog extends AppCompatActivity {
 
