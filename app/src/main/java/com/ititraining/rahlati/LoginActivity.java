@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //open facebook activity.
-                Intent intent= new Intent(LoginActivity.this,FacebookSignin.class);
+                Intent intent= new Intent(LoginActivity.this, FacebookSignIn.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }

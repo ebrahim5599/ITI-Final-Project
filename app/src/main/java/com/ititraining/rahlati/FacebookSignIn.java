@@ -1,7 +1,6 @@
 package com.ititraining.rahlati;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
-public class FacebookSignin extends LoginActivity {
+public class FacebookSignIn extends LoginActivity {
 
     CallbackManager callbackManager;
     @Override
@@ -66,14 +65,14 @@ public class FacebookSignin extends LoginActivity {
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(FacebookSignin.this,""+task.getException(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FacebookSignIn.this,""+task.getException(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
     //send user to Home page.
     private void updateUI(FirebaseUser user) {
-        Intent intent= new Intent(FacebookSignin.this,MainActivity.class);
+        Intent intent= new Intent(FacebookSignIn.this,MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
